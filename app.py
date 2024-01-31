@@ -65,7 +65,8 @@ def predict():
         # Add markers for each data point with popup information
         for i, row in data.iterrows():
             folium.Marker([row['latitude'], row['longitude']],
-                          popup=f"Temperature: {row['temperature_celsius']}, Alert: {row['Alert']}").add_to(marker_cluster)
+                          popup=f"Location: {row['location_name']}<br>Temperature: {row['temperature_celsius']}°C<br> Alert: {row['Alert']}").add_to(marker_cluster)
+
 
         # Create a HeatMap layer based on alert categories
         heat_data = [[row['latitude'], row['longitude']] for i, row in data.iterrows()]
