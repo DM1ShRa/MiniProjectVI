@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Model and Map Integration</title>
+</head>
+
+<body>
+    <h1>ML Model and Map Integration</h1>
+    <form action="/predict" method="post">
+        <label for="temperature_celsius">Temperature (Celsius): </label>
+        <input type="number" name="temperature_celsius" required><br>
+        <label for="country">Country: </label>
+        <input type="text" name="country" required><br>
+        <label for="region">Region: </label>
+        <input type="text" name="region" required><br>
+        <button type="submit">Predict</button>
+    </form>
+</body>
+
+</html>
