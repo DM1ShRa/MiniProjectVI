@@ -45,10 +45,10 @@ def update_data():
         # Fetch and update data every 3 seconds
         data = {"timestamp": int(time.time()), "value": get_updated_value()}
         db.child(data_path).set(data)
-        time.sleep(3)
+        time.sleep(1)
 
 def get_updated_value():
-    data = db.child("/Sensor/DHT/Temperature/value").get().val()
+    data = db.child("/Sensor/DHT/HeatIndex").get().val()
     return data
 
 
