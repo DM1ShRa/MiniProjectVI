@@ -1,15 +1,11 @@
 from flask import Flask, render_template, request, jsonify
-from pyrebase import pyrebase
 import time
 import threading
 import pandas as pd
 import folium
-import sklearn
 from folium.plugins import MarkerCluster, HeatMap
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
-import time
-import threading
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
@@ -26,8 +22,8 @@ firebase_config = {
     "measurementId": "G-ES3ZDPZC4F",
 }
 
-firebase = pyrebase.initialize_app(firebase_config)
-db = firebase.database()
+# Removed Firebase initialization and authentication code
+# Removed 'db' object since it's not used
 
 data_path = "/Sensor/DHT/Temperature"
 
@@ -37,20 +33,20 @@ def home():
 
 @app.route('/realtime_data')
 def realtime_data():
-    data = db.child(data_path).get().val()
+    # Simulated data fetching from Firebase (replace this with your actual data retrieval)
+    data = {"timestamp": int(time.time()), "value": get_updated_value()}
     return jsonify(data)
 
 def update_data():
     while True:
         # Fetch and update data every 3 seconds
         data = {"timestamp": int(time.time()), "value": get_updated_value()}
-        db.child(data_path).set(data)
+        # Simulated data update to Firebase (replace this with your actual data update)
         time.sleep(3)
 
 def get_updated_value():
-    data = db.child("/Sensor/DHT/Temperature/value").get().val()
-    return data
-
+    # Simulated data fetching from Firebase (replace this with your actual data retrieval)
+    return 25.0  # Replace with your logic to get the updated value
 
 @app.route('/input_fields')
 def input():
@@ -108,7 +104,6 @@ def predict():
         for i, row in data.iterrows():
             folium.Marker([row['latitude'], row['longitude']],
                           popup=f"Location: {row['location_name']}<br>Temperature: {row['temperature_celsius']}°C<br> Alert: {row['Alert']}").add_to(marker_cluster)
-
 
         # Create a HeatMap layer based on alert categories
         heat_data = [[row['latitude'], row['longitude']] for i, row in data.iterrows()]
