@@ -4,20 +4,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ML Model and Map Integration</title>
+    <title>Dashboard</title>
+    <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include Socket.IO from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        li {
+            float: left;
+        }
+        
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
+        
+        .active {
+            background-color: #04AA6D;
+        }
+        
+        #chart-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        /* Style individual charts */
+        
+        .chart {
+            width: 100%;
+            /* Use 100% width for responsiveness */
+            max-width: 900px;
+            /* Set a maximum width for each chart */
+            margin: 20px;
+            /* Add some margin between charts */
+        }
+    </style>
 </head>
 
 <body>
-    <h1>ML Model and Map Integration</h1>
-    <form action="/predict" method="post">
-        <label for="temperature_celsius">Temperature (Celsius): </label>
-        <input type="number" name="temperature_celsius" required><br>
-        <label for="country">Country: </label>
-        <input type="text" name="country" required><br>
-        <label for="region">Region: </label>
-        <input type="text" name="region" required><br>
-        <button type="submit">Predict</button>
-    </form>
+    <nav>
+        <ul>
+            <li><a class="active" href="/">Home</a></li>
+            <li><a href="/input_fields">Temprature</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+    <div id="chart-container">
+        <div class="chart">
+            <canvas id="realtimeChart" width="400" height="200"></canvas>
+        </div>
+        <div class="alert" role="alert" id="temperatureAlert"></div>
+    </div>
+
+
+
+    <script>
+        // Initialize an empty chart
+        var ctx = document.getElementById('realtimeChart').getContext('2d');
+        var temperatureAlertDiv = document.getElementById('temperatureAlert');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temprature Data',
+                    data: [],
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Update the chart every 3 seconds
+        setInterval(updateChart, 3000);
+
+        function updateChart() {
+            // Fetch real-time data from the Flask route
+            fetch('/realtime_data')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the chart with new data
+                    updateChartData(data);
+                    updateTemperatureAlert(data.value);
+                });
+        }
+
+        function updateChartData(data) {
+            // Add new data to the chart
+            chart.data.labels.push(data.timestamp);
+            chart.data.datasets[0].data.push(data.value);
+
+            // Remove old data if the number of data points exceeds a certain limit
+            if (chart.data.labels.length > 10) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+
+            // Update the chart
+            chart.update();
+        }
+
+        function updateTemperatureAlert(temperature) {
+            var alertMessage = getTemperatureAlert(temperature);
+            temperatureAlertDiv.innerHTML = `<div class="alert alert-${alertMessage.type}" role="alert">${alertMessage.message}</div>`;
+        }
+
+        function getTemperatureAlert(temperature) {
+            if (temperature <= 5) {
+                return {
+                    type: 'danger',
+                    message: 'Temperature is too low!'
+                };
+            } else if (temperature <= 10 && temperature > 5) {
+                return {
+                    type: 'warning',
+                    message: 'Temperature is low!'
+                };
+            } else if (temperature >= 10 && temperature < 35) {
+                return {
+                    type: 'success',
+                    message: 'Temperature is normal.'
+                };
+            } else if (temperature >= 35 && temperature < 42) {
+                return {
+                    type: 'warning',
+                    message: 'Temperature is high.'
+                };
+            } else {
+                return {
+                    type: 'danger',
+                    message: 'Temperature is too high!'
+                };
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

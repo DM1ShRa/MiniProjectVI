@@ -5,12 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 
 <body>
     <h1>Prediction Result</h1>
-    <p>The predicted alert category is: {{ prediction }}</p>
+
+    {% if prediction == 'Low' %}
+    <div class="alert alert-success" role="alert">
+        The predicted alert category is: {{ prediction }}
+    </div>
+    {% elif prediction == 'Mild' %}
+    <div class="alert alert-info" role="alert">
+        The predicted alert category is: {{ prediction }}
+    </div>
+    {% elif prediction == 'Moderate' %}
+    <div class="alert alert-warning" role="alert">
+        The predicted alert category is: {{ prediction }}
+    </div>
+    {% elif prediction == 'High' %}
+    <div class="alert alert-danger" role="alert">
+        The predicted alert category is: {{ prediction }}
+    </div>
+    {% elif prediction == 'Very High' %}
+    <div class="alert alert-danger" role="alert">
+        The predicted alert category is: {{ prediction }}
+    </div>
+    {% else %}
+    <div class="alert alert-secondary" role="alert">
+        The predicted alert category is: {{ prediction }}
+    </div>
+    {% endif %}
+
     <a href="/">Go back to home</a>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

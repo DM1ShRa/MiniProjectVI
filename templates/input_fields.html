@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>ML Model and Map Integration</title>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        li {
+            float: left;
+        }
+        
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
+        
+        .active {
+            background-color: #04AA6D;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="/">Home</a></li>
+            <li><a href="/input_fields">Temprature</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+    <h1>ML Model and Map Integration</h1>
+    <form action="/predict" method="post">
+        <div class="input-group w-25 mb-3">
+            <span class="input-group-text" id="basic-addon1">°C</span>
+            <input type="text" class="form-control" name="temperature_celsius" placeholder="Temprature" aria-label="Temprature" aria-describedby="basic-addon1" required>
+        </div>
+        <div class="input-group w-25 mb-3">
+            <span class="input-group-text" id="basic-addon1">Country</span>
+            <input type="text" class="form-control" name="country" placeholder="Country" aria-label="Country" aria-describedby="basic-addon1" required>
+        </div>
+        <div class="input-group w-25 mb-3">
+            <span class="input-group-text" id="basic-addon1">Region</span>
+            <input type="text" class="form-control" name="region" placeholder="Region" aria-label="Region" aria-describedby="basic-addon1" required>
+        </div>
+        <button type="submit" class="btn btn-success">Predict</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>
