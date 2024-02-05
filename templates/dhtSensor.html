@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Include Socket.IO from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <!-- Include Firebase JavaScript SDK (Legacy) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         ul {
             list-style-type: none;
@@ -53,6 +55,24 @@
             margin: 20px 0 20px 20px;
             /* Add some margin between charts */
         }
+        
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
     </style>
 </head>
 
@@ -74,9 +94,38 @@
             <canvas id="realtimeChart" width="400" height="200"></canvas>
         </div>
     </div>
+    <h2>Real-time Data Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+            </tr>
+        </thead>
+        <tbody id="dataTableBody">
+            <!-- Data will be dynamically added here -->
+        </tbody>
+    </table>
 
     <script>
         // Initialize an empty chart
+        var firebaseConfig = {
+            "apiKey": "AIzaSyAtZb6-LRZMpCpPasCbk_vycTcRQ5fl7KA",
+            "authDomain": "dpps-23928.firebaseapp.com",
+            "databaseURL": "https://dpps-23928-default-rtdb.asia-southeast1.firebasedatabase.app",
+            "projectId": "dpps-23928",
+            "storageBucket": "dpps-23928.appspot.com",
+            "messagingSenderId": "114905554074",
+            "appId": "1:114905554074:web:d527757221e8fabe115323",
+            "measurementId": "G-ES3ZDPZC4F",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to the Firebase database
+        var database = firebase.database();
         var ctx = document.getElementById('realtimeChart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'line',
@@ -137,8 +186,56 @@
             chart.update();
         }
 
+        function updateDataTable() {
+            // Fetch real-time data from the Firebase database
+            database.ref('/realtime_data').once('value').then(function(snapshot) {
+                var data = snapshot.val();
+                if (data) {
+                    // Update the table with new data
+                    updateTableData(data);
+                }
+            });
+        }
+
+        function updateTableData(data) {
+            // Get the table body element
+            var tableBody = document.getElementById('dataTableBody');
+
+            // Clear existing table rows
+            tableBody.innerHTML = "";
+
+            // Loop through the data and create table rows
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var rowData = data[key];
+                    var row = document.createElement('tr');
+
+                    // Create table cells and set data
+                    var timestampCell = document.createElement('td');
+                    timestampCell.textContent = rowData.Temperature.timestamp;
+
+                    var temperatureCell = document.createElement('td');
+                    temperatureCell.textContent = rowData.Temperature.value;
+
+                    var humidityCell = document.createElement('td');
+                    humidityCell.textContent = rowData.Humidity;
+
+                    // Append cells to the row
+                    row.appendChild(timestampCell);
+                    row.appendChild(temperatureCell);
+                    row.appendChild(humidityCell);
+
+                    // Append row to the table body
+                    tableBody.appendChild(row);
+                }
+            }
+        }
+
         // Update the chart every 3 seconds
-        setInterval(updateChart, 3000);
+        setInterval(function() {
+            updateChart();
+            updateDataTable();
+        }, 3000);
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
