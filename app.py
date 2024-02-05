@@ -155,6 +155,14 @@ def before_request():
 @app.route('/input_fields')
 def input():
     return render_template('input_fields.html', person=person)
+@app.before_request
+def before_request():
+    if request.endpoint == 'sensors' and not person["is_logged_in"]:
+        # Redirect to login page if not logged in
+        return redirect(url_for('login'))
+@app.route('/sensors')
+def sensors():
+    return render_template('sensors.html', person=person)
 
 @app.route('/predict', methods=['POST'])
 def predict():
