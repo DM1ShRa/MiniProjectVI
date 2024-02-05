@@ -1,15 +1,14 @@
+<!-- mpu_sensor.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>MPU Sensor</title>
     <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Include Socket.IO from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
     <style>
         ul {
             list-style-type: none;
@@ -38,6 +37,21 @@
         .active {
             background-color: #04AA6D;
         }
+        
+        #chart-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        /* Style individual charts */
+        
+        .chart {
+            width: 100%;
+            /* Use 100% width for responsiveness */
+            max-width: 900px;
+            /* Set a maximum width for each chart */
+            margin: 20px;
+            /* Add some margin between charts */
+        }
     </style>
 </head>
 
@@ -53,9 +67,9 @@
             {% endif %}
         </ul>
     </nav>
-    <div>
-        <h1>BLOG</h1>
-    </div>
+    <!-- Content specific to MPU sensor -->
+    <h1>MPU Sensor Information</h1>
+    <!-- Add specific content here -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHT Sensor</title>
+    <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include Socket.IO from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.3/socket.io.js"></script>
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        
+        li {
+            float: left;
+        }
+        
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
+        
+        .active {
+            background-color: #04AA6D;
+        }
+        
+        #chart-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        /* Style individual charts */
+        
+        .chart {
+            width: 100%;
+            /* Use 100% width for responsiveness */
+            max-width: 600px;
+            /* Set a maximum width for each chart */
+            margin: 20px;
+            /* Add some margin between charts */
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="/">Home</a></li>
+            <li><a href="/input_fields">Temperature</a></li>
+            <li><a href="/sensors">Sensors</a></li>
+            <li><a href="#yourSensors">Your Sensors</a></li>
+            {% if person.is_logged_in %}
+            <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <h1>DHT Sensor Information</h1>
+    <div id="chart-container">
+        <div class="chart">
+            <canvas id="realtimeChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Initialize an empty chart
+        var ctx = document.getElementById('realtimeChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperature Data',
+                    data: [],
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    fill: false,
+                    tension: 0
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Update the chart only when new data is retrieved
+        function updateChart() {
+            // Fetch real-time data from the Flask route
+            fetch('/realtime_data')
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the data is valid before updating the chart
+                    if (isValidData(data)) {
+                        // Update the chart with new data
+                        updateChartData(data);
+                    }
+                });
+        }
+
+        function isValidData(data) {
+            // Add your validation logic here
+            // For example, check if data.timestamp and data.value exist and are of the correct type
+            return data && typeof data.timestamp === 'number' && typeof data.value === 'number';
+        }
+
+        function updateChartData(data) {
+            // Add new data to the chart
+            chart.data.labels.push(data.timestamp);
+            chart.data.datasets[0].data.push(data.value);
+
+            // Set line color based on temperature ranges
+            // Remove old data if the number of data points exceeds a certain limit
+            if (chart.data.labels.length > 10) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+
+            // Update the chart
+            chart.update();
+        }
+
+        // Update the chart every 3 seconds
+        setInterval(updateChart, 3000);
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

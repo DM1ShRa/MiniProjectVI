@@ -146,6 +146,7 @@ def update_data():
 def get_updated_value():
     # Simulated data fetching from Firebase (replace this with your actual data retrieval)
     return 25.0  # Replace with your logic to get the updated value
+
 @app.before_request
 def before_request():
     if request.endpoint == 'input' and not person["is_logged_in"]:
@@ -163,6 +164,23 @@ def before_request():
 @app.route('/sensors')
 def sensors():
     return render_template('sensors.html', person=person)
+@app.before_request
+def before_request():
+    if request.endpoint == 'dht_sensor' and not person["is_logged_in"]:
+        # Redirect to login page if not logged in
+        return redirect(url_for('login'))
+@app.route('/dht_sensor')
+def dht_sensor():
+    return render_template('dhtSensor.html', person=person)
+
+@app.before_request
+def before_request():
+    if request.endpoint == 'mpu_sensor' and not person["is_logged_in"]:
+        # Redirect to login page if not logged in
+        return redirect(url_for('login'))
+@app.route('/mpu_sensor')
+def mpu_sensor():
+    return render_template('mpuSensor.html', person=person)
 
 @app.route('/predict', methods=['POST'])
 def predict():
