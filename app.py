@@ -146,6 +146,11 @@ def update_data():
 def get_updated_value():
     # Simulated data fetching from Firebase (replace this with your actual data retrieval)
     return 25.0  # Replace with your logic to get the updated value
+@app.before_request
+def before_request():
+    if request.endpoint == 'input' and not person["is_logged_in"]:
+        # Redirect to login page if not logged in
+        return redirect(url_for('login'))
 
 @app.route('/input_fields')
 def input():
