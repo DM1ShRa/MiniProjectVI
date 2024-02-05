@@ -11,7 +11,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
 app = Flask(__name__)
-
+app = Flask(__name__, static_url_path='/static')
 firebase_config = {
     "apiKey": "AIzaSyAtZb6-LRZMpCpPasCbk_vycTcRQ5fl7KA",
     "authDomain": "dpps-23928.firebaseapp.com",
