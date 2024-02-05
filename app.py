@@ -25,7 +25,7 @@ firebase_config = {
 config = {
   "apiKey": "AIzaSyC_sYbyfyI9l7O5yzMGMltS7Jm051HNDU0",
   "authDomain": "auth-3538a.firebaseapp.com",
-  "databaseURL" : "",
+  "databaseURL" : "https://auth-3538a-default-rtdb.firebaseio.com/",
   "projectId": "auth-3538a",
   "storageBucket": "auth-3538a.appspot.com",
   "messagingSenderId": "776411640881",
