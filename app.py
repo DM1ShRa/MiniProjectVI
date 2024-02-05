@@ -55,7 +55,7 @@ def signup():
 @app.route('/')
 def home():
     if person["is_logged_in"] == True:
-        return render_template('index.html')
+        return render_template('index.html', person=person)
     else:
         return redirect(url_for('login'))
 
@@ -120,6 +120,15 @@ def register():
             return redirect(url_for('home'))
         else:
             return redirect(url_for('register'))
+        
+@app.route('/logout')
+def logout():
+    global person
+    person["is_logged_in"] = False
+    person["name"] = ""
+    person["email"] = ""
+    person["uid"] = ""
+    return redirect(url_for('login'))
 
 @app.route('/realtime_data')
 def realtime_data():
