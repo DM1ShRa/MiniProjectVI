@@ -12,35 +12,14 @@
     <!-- Include Firebase JavaScript SDK (Legacy) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
-        
-        li {
-            float: left;
-        }
-        
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        
-        li a:hover:not(.active) {
-            background-color: #111;
-        }
-        
-        .active {
-            background-color: #04AA6D;
-        }
-        
+       
         #chart-container {
             max-width: 800px;
             margin: 0 auto;
@@ -76,36 +55,170 @@
     </style>
 </head>
 
-<body>
-    <nav>
-        <ul>
-            <li><a class="active" href="/">Home</a></li>
-            <li><a href="/input_fields">Temperature</a></li>
-            <li><a href="/sensors">Sensors</a></li>
-            <li><a href="#yourSensors">Your Sensors</a></li>
-            {% if person.is_logged_in %}
-            <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    <h1>DHT Sensor Information</h1>
-    <div id="chart-container">
-        <div class="chart">
-            <canvas id="realtimeChart" width="400" height="200"></canvas>
+<body class="light-theme">
+    <header>
+
+        <div class="container">
+
+            <nav class="navbar">
+
+                <a href="#">
+                    <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-light">
+                    <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-dark">
+                </a>
+
+                <div class="btn-group">
+
+                    <button class="theme-btn theme-btn-mobile light">
+                        <ion-icon name="moon" class="moon"></ion-icon>
+                        <ion-icon name="sunny" class="sun"></ion-icon>
+                    </button>
+
+                    <button class="nav-menu-btn">
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </button>
+
+                </div>
+
+                <div class="flex-wrapper">
+
+                    <ul class="desktop-nav">
+
+                        <li>
+                            <a href="/" class="nav-link">Home</a>
+                        </li>
+
+                        <li>
+                            <a href="/input_fields" class="nav-link">Temperature</a>
+                        </li>
+
+                        <li>
+                            <a href="/sensors" class="nav-link">Sensor</a>
+                        </li>
+
+                        <li>
+                            <a href="#yourSensors" class="nav-link">Your Sensor</a>
+                        </li>
+
+                        {% if person.is_logged_in %}
+                        <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+                        {% endif %}
+
+                    </ul>
+
+                    <button class="theme-btn theme-btn-desktop light">
+                        <ion-icon name="moon" class="moon"></ion-icon>
+                        <ion-icon name="sunny" class="sun"></ion-icon>
+                    </button>
+
+                </div>
+
+                <div class="mobile-nav">
+
+                    <button class="nav-close-btn">
+                        <ion-icon name="close-outline"></ion-icon>
+                    </button>
+
+                    <div class="wrapper">
+
+                        <p class="h3 nav-title">Main Menu</p>
+
+                        <ul>
+                            <li class="nav-item">
+                                <a href="/" class="nav-link">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/input_fields" class="nav-link">Temperature</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/sensors" class="nav-link">Sensors</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#yourSensors" class="nav-link">Your Sensors</a>
+                            </li>
+
+                            {% if person.is_logged_in %}
+                            <li><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+                            {% endif %}
+
+                        </ul>
+
+                    </div>
+
+                    <!-- <div>
+                
+                            <p class="h3 nav-title">Topics</p>
+                
+                            <ul>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">Disaster</a>
+                                </li>
+                
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">Sensors</a>
+                                </li>
+                
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">Prevention</a>
+                                </li>
+                            </ul>
+                
+                        </div> -->
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+    <div class="main">
+        <div class="container">
+            
+            <div class="blog">
+                <h2 class="h2">DHT Sensor Information</h2>
+                <div id="chart-container">
+                    <div class="chart">
+                        <canvas id="realtimeChart" width="400" height="200"></canvas>
+                    </div>
+                </div> <br><br>
+                <h2 class="h2">Real-time Data Table</h2>
+                <table id="sensorDataTable">
+                    <thead>
+                        <tr>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table content will be dynamically added here -->
+                    </tbody>
+                </table>
+                <div id="chart-container">
+                    <div class="chart">
+                        <canvas id="realtimeChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+                <h2>Real-time Data Table</h2>
+                <table id="sensorDataTable">
+                    <thead>
+                        <tr>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table content will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <h2>Real-time Data Table</h2>
-    <table id="sensorDataTable">
-        <thead>
-            <tr>
-                <th>Temperature</th>
-                <th>Humidity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Table content will be dynamically added here -->
-        </tbody>
-    </table>
+    
+    
 
     <script>
         // Initialize an empty chart
@@ -185,6 +298,76 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <footer>
+
+        <div class="container">
+
+            <div class="wrapper">
+
+                <a href="#" class="footer-logo">
+                    <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-light">
+                    <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-dark">
+                </a>
+
+                <p class="footer-text">
+                    "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility,
+                    optimum Web performance, and seamless Database management, integrated with cutting-edge IoT sensors
+                    for enhanced real-time monitoring."
+                </p>
+
+            </div>
+
+            <div class="wrapper">
+
+                <p class="footer-title">Quick Links</p>
+
+                <ul>
+
+                    <li>
+                        <a href="#" class="footer-link">Advertise with us</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">About Us</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">Contact Us</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="wrapper">
+
+                <p class="footer-title">Legal Stuff</p>
+
+                <ul>
+
+                    <li>
+                        <a href="#" class="footer-link">Privacy Notice</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">Cookie Policy</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">Terms Of Use</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <p class="copyright">
+            &copy; Copyright 2024 <a href="#">RakshaNetra</a>
+        </p>
+
+    </footer>
 </body>
 
 </html>
