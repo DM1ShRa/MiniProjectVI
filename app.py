@@ -154,7 +154,7 @@ def before_request():
 
 @app.route('/input_fields')
 def input():
-    return render_template('input_fields.html')
+    return render_template('input_fields.html', person=person)
 
 @app.route('/predict', methods=['POST'])
 def predict():

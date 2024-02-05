@@ -44,6 +44,9 @@
             <li><a href="/input_fields">Temprature</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href="#about">About</a></li>
+            {% if person.is_logged_in %}
+            <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+            {% endif %}
         </ul>
     </nav>
     <h1>ML Model and Map Integration</h1>
