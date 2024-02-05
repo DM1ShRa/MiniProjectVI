@@ -42,7 +42,7 @@
         <ul>
             <li><a class="active" href="/">Home</a></li>
             <li><a href="/input_fields">Temprature</a></li>
-            <li><a href="#contact">Sensors</a></li>
+            <li><a href="/sensors">Sensors</a></li>
             <li><a href="#about">Your Sensors</a></li>
             {% if person.is_logged_in %}
             <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
