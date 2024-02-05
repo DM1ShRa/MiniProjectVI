@@ -95,16 +95,15 @@
         </div>
     </div>
     <h2>Real-time Data Table</h2>
-    <table>
+    <table id="sensorDataTable">
         <thead>
             <tr>
-                <th>Timestamp</th>
                 <th>Temperature</th>
                 <th>Humidity</th>
             </tr>
         </thead>
-        <tbody id="dataTableBody">
-            <!-- Data will be dynamically added here -->
+        <tbody>
+            <!-- Table content will be dynamically added here -->
         </tbody>
     </table>
 
@@ -126,6 +125,7 @@
 
         // Reference to the Firebase database
         var database = firebase.database();
+        var sensorDataRef = database.ref('/Sensor/DHT');
         var ctx = document.getElementById('realtimeChart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'line',
@@ -150,92 +150,37 @@
             }
         });
 
-        // Update the chart only when new data is retrieved
-        function updateChart() {
-            // Fetch real-time data from the Flask route
-            fetch('/realtime_data')
-                .then(response => response.json())
-                .then(data => {
-                    // Check if the data is valid before updating the chart
-                    if (isValidData(data)) {
-                        // Update the chart with new data
-                        updateChartData(data);
-                    }
-                });
-        }
+        function updateChart(timestamp, value) {
+            chart.data.labels.push(timestamp);
+            chart.data.datasets[0].data.push(value);
 
-        function isValidData(data) {
-            // Add your validation logic here
-            // For example, check if data.timestamp and data.value exist and are of the correct type
-            return data && typeof data.timestamp === 'number' && typeof data.value === 'number';
-        }
-
-        function updateChartData(data) {
-            // Add new data to the chart
-            chart.data.labels.push(data.timestamp);
-            chart.data.datasets[0].data.push(data.value);
-
-            // Set line color based on temperature ranges
-            // Remove old data if the number of data points exceeds a certain limit
             if (chart.data.labels.length > 10) {
                 chart.data.labels.shift();
                 chart.data.datasets[0].data.shift();
             }
 
-            // Update the chart
             chart.update();
         }
 
-        function updateDataTable() {
-            // Fetch real-time data from the Firebase database
-            database.ref('/realtime_data').once('value').then(function(snapshot) {
-                var data = snapshot.val();
-                if (data) {
-                    // Update the table with new data
-                    updateTableData(data);
-                }
-            });
-        }
+        function updateTable(data) {
+            var tableBody = document.getElementById('sensorDataTable').getElementsByTagName('tbody')[0];
+            var newRow = tableBody.insertRow();
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
 
-        function updateTableData(data) {
-            // Get the table body element
-            var tableBody = document.getElementById('dataTableBody');
+            cell1.textContent = data.Temperature || 'N/A';
+            cell2.textContent = data.Humidity || 'N/A';
 
-            // Clear existing table rows
-            tableBody.innerHTML = "";
-
-            // Loop through the data and create table rows
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    var rowData = data[key];
-                    var row = document.createElement('tr');
-
-                    // Create table cells and set data
-                    var timestampCell = document.createElement('td');
-                    timestampCell.textContent = rowData.Temperature.timestamp;
-
-                    var temperatureCell = document.createElement('td');
-                    temperatureCell.textContent = rowData.Temperature.value;
-
-                    var humidityCell = document.createElement('td');
-                    humidityCell.textContent = rowData.Humidity;
-
-                    // Append cells to the row
-                    row.appendChild(timestampCell);
-                    row.appendChild(temperatureCell);
-                    row.appendChild(humidityCell);
-
-                    // Append row to the table body
-                    tableBody.appendChild(row);
-                }
+            if (tableBody.rows.length > 10) {
+                tableBody.deleteRow(0);
             }
         }
 
-        // Update the chart every 3 seconds
-        setInterval(function() {
-            updateChart();
-            updateDataTable();
-        }, 3000);
+        sensorDataRef.on('child_added', function(snapshot) {
+            var data = snapshot.val();
+            updateTable(data);
+            updateChart(data.timestamp, data.value);
+        });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
