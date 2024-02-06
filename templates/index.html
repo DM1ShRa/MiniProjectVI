@@ -2,115 +2,114 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DPPS</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 
-  <!--
+    <!--
     - favicon
   -->
-  <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+    <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 
 <body class="light-theme">
-  <header>
+    <header>
 
-    <div class="container">
+        <div class="container">
 
-      <nav class="navbar">
+            <nav class="navbar">
 
-                <a href="#">
+                <a href="/">
                     <img src="/static//images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-light">
                     <img src="/static//images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-dark">
                 </a>
-            
+
                 <div class="btn-group">
-            
+
                     <button class="theme-btn theme-btn-mobile light">
                         <ion-icon name="moon" class="moon"></ion-icon>
                         <ion-icon name="sunny" class="sun"></ion-icon>
                     </button>
-            
+
                     <button class="nav-menu-btn">
                         <ion-icon name="menu-outline"></ion-icon>
                     </button>
-            
+
                 </div>
-            
+
                 <div class="flex-wrapper">
-            
+
                     <ul class="desktop-nav">
-            
+
                         <li>
                             <a href="/" class="nav-link">Home</a>
                         </li>
-            
+
                         <li>
                             <a href="/input_fields" class="nav-link">Temperature</a>
                         </li>
-            
+
                         <li>
                             <a href="/sensors" class="nav-link">Sensor</a>
                         </li>
-            
+
                         <li>
-                            <a href="#yourSensors" class="nav-link">Your Sensor</a>
+                            <a href="/urDHT_sensor" class="nav-link">Your Sensor</a>
                         </li>
-                        
+
                         {% if person.is_logged_in %}
                         <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
                         {% endif %}
-            
+
                     </ul>
-            
+
                     <button class="theme-btn theme-btn-desktop light">
                         <ion-icon name="moon" class="moon"></ion-icon>
                         <ion-icon name="sunny" class="sun"></ion-icon>
                     </button>
-            
+
                 </div>
-            
+
                 <div class="mobile-nav">
-            
+
                     <button class="nav-close-btn">
                         <ion-icon name="close-outline"></ion-icon>
                     </button>
-            
+
                     <div class="wrapper">
-            
+
                         <p class="h3 nav-title">Main Menu</p>
-            
+
                         <ul>
                             <li class="nav-item">
                                 <a href="/" class="nav-link">Home</a>
                             </li>
-            
+
                             <li class="nav-item">
                                 <a href="/input_fields" class="nav-link">Temperature</a>
                             </li>
-            
+
                             <li class="nav-item">
                                 <a href="/sensors" class="nav-link">Sensors</a>
                             </li>
-            
+
                             <li class="nav-item">
                                 <a href="#yourSensors" class="nav-link">Your Sensors</a>
                             </li>
-            
+
                             {% if person.is_logged_in %}
                             <li><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
                             {% endif %}
-            
+
                         </ul>
-            
+
                     </div>
-            
+
                     <!-- <div>
             
                         <p class="h3 nav-title">Topics</p>
@@ -130,554 +129,551 @@
                         </ul>
             
                     </div> -->
-            
+
                 </div>
-            
+
             </nav>
 
-    </div>
+        </div>
 
-  </header>
-
-
+    </header>
 
 
 
-  <main>
 
-    <!--
+
+    <main>
+
+        <!--
       - #HERO SECTION
     -->
 
-    <div class="hero">
+        <div class="hero">
 
-      <div class="container">
+            <div class="container">
 
-        <div class="left">
+                <div class="left">
 
-          <h1 class="h1">
-            Building a <b>safer</b> tomorrow
-            
-          </h1>
+                    <h1 class="h1">
+                        Building a <b>safer</b> tomorrow
 
-          <p class="h3">
-            Navigating disasters with innovation and collaboration
-          </p>
+                    </h1>
 
-          <!-- <div class="btn-group">
+                    <p class="h3">
+                        Navigating disasters with innovation and collaboration
+                    </p>
+
+                    <!-- <div class="btn-group">
             <a href="#" class="btn btn-primary">Contact Me</a>
             <a href="#" class="btn btn-secondary">About Me</a>
           </div> -->
 
+                </div>
+
+                <div class="right">
+
+                    <div class="pattern-bg"></div>
+                    <div class="img-box">
+                        <img src="/static/images/dpps.jfif" alt="DPPS" class="hero-img">
+                        <div class="shape shape-1"></div>
+                        <div class="shape shape-2"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="right">
-
-          <div class="pattern-bg"></div>
-          <div class="img-box">
-            <img src="/static/images/dpps.jfif" alt="DPPS" class="hero-img">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
 
 
 
 
+        <div class="main">
 
-    <div class="main">
+            <div class="container">
 
-      <div class="container">
-
-        <!--
+                <!--
           - BLOG SECTION
         -->
 
-        <div class="blog">
+                <div class="blog">
 
-          <h2 class="h2">Latest Blog Post</h2>
+                    <h2 class="h2">Latest Blog Post</h2>
 
-          <div class="blog-card-group">
+                    <div class="blog-card-group">
 
-            <div class="blog-card">
+                        <div class="blog-card">
 
-              <div class="blog-card-banner">
-                <img src="https://blogs.worldbank.org/sites/default/files/users/user170801/blog-DRM2.jpg" alt="Building microservices with Dropwizard, MongoDB & Docker"
-                  width="250" class="blog-banner-img">
-              </div>
+                            <div class="blog-card-banner">
+                                <img src="https://blogs.worldbank.org/sites/default/files/users/user170801/blog-DRM2.jpg" alt="Building microservices with Dropwizard, MongoDB & Docker" width="250" class="blog-banner-img">
+                            </div>
 
-              <div class="blog-content-wrapper">
+                            <div class="blog-content-wrapper">
 
-                <button class="blog-topic text-tiny">Disater Management</button>
+                                <button class="blog-topic text-tiny">Disater Management</button>
 
-                <h3>
-                  <a href="https://blogs.worldbank.org/sustainablecities/5-tips-inclusive-disaster-risk-management-planning" class="h3">
+                                <h3>
+                                    <a href="https://blogs.worldbank.org/sustainablecities/5-tips-inclusive-disaster-risk-management-planning" class="h3">
                     5 tips for inclusive disaster-risk management planning
                   </a>
-                </h3>
+                                </h3>
 
-                <p class="blog-text">
-                    The recent flooding in Malawi and Pakistan, earthquakes in Türkiye and Syria, and Typhoon Mocha in Myanmar are painful reminders of the catastrophic impacts of disasters. By including women, persons with disabilities, the elderly, Indigenous Peoples, and other marginalized groups as active participants in building resilience to climate change and natural hazards, we tap into their unique, often overlooked knowledge, fostering resilience. People who have often been excluded from disaster risk reduction activities can share their untapped knowledge with frontline responders in ways that can save lives and livelihoods.  
-                </p>
+                                <p class="blog-text">
+                                    The recent flooding in Malawi and Pakistan, earthquakes in Türkiye and Syria, and Typhoon Mocha in Myanmar are painful reminders of the catastrophic impacts of disasters. By including women, persons with disabilities, the elderly, Indigenous Peoples,
+                                    and other marginalized groups as active participants in building resilience to climate change and natural hazards, we tap into their unique, often overlooked knowledge, fostering resilience. People who have often been
+                                    excluded from disaster risk reduction activities can share their untapped knowledge with frontline responders in ways that can save lives and livelihoods.
+                                </p>
 
-                <div class="wrapper-flex">
+                                <div class="wrapper-flex">
 
-                  <!-- <div class="profile-wrapper">
+                                    <!-- <div class="profile-wrapper">
                     <img src="./assets/images/author.png" alt="Julia Walker" width="50">
                   </div> -->
 
-                  <div class="wrapper">
-                    <a href="https://blogs.worldbank.org/" class="h4">World Bank Blogs</a>
+                                    <div class="wrapper">
+                                        <a href="https://blogs.worldbank.org/" class="h4">World Bank Blogs</a>
 
-                    <p class="text-sm">
-                      <time datetime="2022-01-17">Oct 24, 2023</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT3M">10 min</time>
-                    </p>
-                  </div>
+                                        <p class="text-sm">
+                                            <time datetime="2022-01-17">Oct 24, 2023</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT3M">10 min</time>
+                                        </p>
+                                    </div>
 
-                </div>
+                                </div>
 
-              </div>
+                            </div>
 
-            </div>
-
-
-            <div class="blog-card">
-
-              <div class="blog-card-banner">
-                <img src="https://www.rand.org/content/rand/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and/jcr:content/par/blogpost.crop.868x455.lb.webp/1686612120627.webp" alt="Fast web page loading on a $20 feature phone" width="250"
-                  class="blog-banner-img">
-              </div>
-
-              <div class="blog-content-wrapper">
-
-                <button class="blog-topic text-tiny">Atmosphere</button>
-
-                <h3><a href="https://www.rand.org/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and.html" class="h3">We Aren't Helpless in the Face of Increasing Fires and Smoke</a></h3>
-
-                <p class="blog-text">
-                    As swaths of central and eastern North America faced skies choked with smoke last week, those of us in the West empathized. Our part of the continent watches sunsets turned blood red through bloodshot eyes every year.
-                </p>
-
-                <div class="wrapper-flex">
-
-                 
-
-                  <div class="wrapper">
-                    <a href="https://www.rand.org/" class="h4">TheRANDBlog</a>
-
-                    <p class="text-sm">
-                      <time datetime="2021-12-10">Jun 12, 2023</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT2M">5 min</time>
-                    </p>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
+                        </div>
 
 
-            <div class="blog-card">
+                        <div class="blog-card">
 
-              <div class="blog-card-banner">
-                <img src="https://cdn.downtoearth.org.in/library/large/2023-10-10/0.99398300_1696925336_odisha.png" alt="Accessibility Tips for Web Developers" width="250"
-                  class="blog-banner-img">
-              </div>
+                            <div class="blog-card-banner">
+                                <img src="https://www.rand.org/content/rand/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and/jcr:content/par/blogpost.crop.868x455.lb.webp/1686612120627.webp" alt="Fast web page loading on a $20 feature phone" width="250"
+                                    class="blog-banner-img">
+                            </div>
 
-              <div class="blog-content-wrapper">
+                            <div class="blog-content-wrapper">
 
-                <button class="blog-topic text-tiny">Natural Disaster</button>
+                                <button class="blog-topic text-tiny">Atmosphere</button>
 
-                <h3><a href="https://www.downtoearth.org.in/blog/natural-disasters/25-years-of-odisha-super-cyclone-a-study-of-jagatsinghpur-shows-advances-the-way-ahead-92218" class="h3">25 years of Odisha Super Cyclone: A study of Jagatsinghpur shows advances & the way ahead</a></h3>
+                                <h3><a href="https://www.rand.org/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and.html" class="h3">We Aren't Helpless in the Face of Increasing Fires and Smoke</a></h3>
 
-                <p class="blog-text">
-                    As we approach the 25th year of the Super Cyclone in Odisha, there are several things we need to celebrate for the advances made in disaster preparedness, timely warnings and evacuation and response. But we also need to evaluate the gaps and plan better for upcoming climate-related disasters.
+                                <p class="blog-text">
+                                    As swaths of central and eastern North America faced skies choked with smoke last week, those of us in the West empathized. Our part of the continent watches sunsets turned blood red through bloodshot eyes every year.
+                                </p>
 
-                    Global warming has heightened cyclone intensity, multiple rapid intensifications leading to unpredictability of cyclone behaviour, according to a study by the Indian National Centre for Ocean Information Services (INCOIS). This calls for better forecasting systems, strengthening of disaster response systems and infrastructure improvement.
-                </p>
+                                <div class="wrapper-flex">
 
-                <div class="wrapper-flex">
 
-                  <!-- <div class="profile-wrapper">
+
+                                    <div class="wrapper">
+                                        <a href="https://www.rand.org/" class="h4">TheRANDBlog</a>
+
+                                        <p class="text-sm">
+                                            <time datetime="2021-12-10">Jun 12, 2023</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT2M">5 min</time>
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="blog-card">
+
+                            <div class="blog-card-banner">
+                                <img src="https://cdn.downtoearth.org.in/library/large/2023-10-10/0.99398300_1696925336_odisha.png" alt="Accessibility Tips for Web Developers" width="250" class="blog-banner-img">
+                            </div>
+
+                            <div class="blog-content-wrapper">
+
+                                <button class="blog-topic text-tiny">Natural Disaster</button>
+
+                                <h3><a href="https://www.downtoearth.org.in/blog/natural-disasters/25-years-of-odisha-super-cyclone-a-study-of-jagatsinghpur-shows-advances-the-way-ahead-92218" class="h3">25 years of Odisha Super Cyclone: A study of Jagatsinghpur shows advances & the way ahead</a></h3>
+
+                                <p class="blog-text">
+                                    As we approach the 25th year of the Super Cyclone in Odisha, there are several things we need to celebrate for the advances made in disaster preparedness, timely warnings and evacuation and response. But we also need to evaluate the gaps and plan better
+                                    for upcoming climate-related disasters. Global warming has heightened cyclone intensity, multiple rapid intensifications leading to unpredictability of cyclone behaviour, according to a study by the Indian National
+                                    Centre for Ocean Information Services (INCOIS). This calls for better forecasting systems, strengthening of disaster response systems and infrastructure improvement.
+                                </p>
+
+                                <div class="wrapper-flex">
+
+                                    <!-- <div class="profile-wrapper">
                     <img src="./assets/images/author.png" alt="Julia walker" width="50">
                   </div> -->
 
-                  <div class="wrapper">
-                    <a href="https://www.downtoearth.org.in/" class="h4">downtoearth</a>
+                                    <div class="wrapper">
+                                        <a href="https://www.downtoearth.org.in/" class="h4">downtoearth</a>
 
-                    <p class="text-sm">
-                      <time datetime="2021-11-28">Oct 10, 2023</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT4M">4 min</time>
-                    </p>
-                  </div>
+                                        <p class="text-sm">
+                                            <time datetime="2021-11-28">Oct 10, 2023</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT4M">4 min</time>
+                                        </p>
+                                    </div>
 
-                </div>
+                                </div>
 
-              </div>
+                            </div>
 
-            </div>
+                        </div>
 
 
-            <div class="blog-card">
+                        <div class="blog-card">
 
-              <div class="blog-card-banner">
-                <img src="https://www.boomlive.in/h-upload/2022/04/08/974338-indian-oil-01.webp" alt="Dynamically Securing Databases using Hashicorp Vault"
-                  width="250" class="blog-banner-img">
-              </div>
+                            <div class="blog-card-banner">
+                                <img src="https://www.boomlive.in/h-upload/2022/04/08/974338-indian-oil-01.webp" alt="Dynamically Securing Databases using Hashicorp Vault" width="250" class="blog-banner-img">
+                            </div>
 
-              <div class="blog-content-wrapper">
+                            <div class="blog-content-wrapper">
 
-                <button class="blog-topic text-tiny">Warnings</button>
+                                <button class="blog-topic text-tiny">Warnings</button>
 
-                <h3><a href="" class="h3">No, Indian Oil Corporation Did Not Warn Of Exploding Fuel Tanks In Summer
+                                <h3><a href="" class="h3">No, Indian Oil Corporation Did Not Warn Of Exploding Fuel Tanks In Summer
 
                    </a></h3>
 
-                <p class="blog-text">
-                    A message claiming Indian Oil Corporation Ltd has warned people against filling petrol in vehicles up to the maximum limit as rising temperatures in the coming days might cause an explosion, is fake and has been falsely attributed to the company. The fake message further claims five such explosions have taken place this week 'due to filling of maximum petrol'.
+                                <p class="blog-text">
+                                    A message claiming Indian Oil Corporation Ltd has warned people against filling petrol in vehicles up to the maximum limit as rising temperatures in the coming days might cause an explosion, is fake and has been falsely attributed to the company. The
+                                    fake message further claims five such explosions have taken place this week 'due to filling of maximum petrol'. https://www.boomlive.in/fact-check/politics/viral-message-indian-oil-temperature-vehicle-fuel-maximum-limit-warning-social-media-17467
+                                </p>
 
-                    https://www.boomlive.in/fact-check/politics/viral-message-indian-oil-temperature-vehicle-fuel-maximum-limit-warning-social-media-17467
-                </p>
+                                <div class="wrapper-flex">
 
-                <div class="wrapper-flex">
-
-                  <!-- <div class="profile-wrapper">
+                                    <!-- <div class="profile-wrapper">
                     <img src="./assets/images/author.png" alt="Julia walker" width="50">
                   </div> -->
 
-                  <div class="wrapper">
-                    <a href="https://www.boomlive.in/" class="h4">boomlive</a>
+                                    <div class="wrapper">
+                                        <a href="https://www.boomlive.in/" class="h4">boomlive</a>
 
-                    <p class="text-sm">
-                      <time datetime="2021-11-20">Apr 8, 2022</time>
-                      <span class="separator"></span>
-                      <ion-icon name="time-outline"></ion-icon>
-                      <time datetime="PT4M">4 min</time>
-                    </p>
-                  </div>
+                                        <p class="text-sm">
+                                            <time datetime="2021-11-20">Apr 8, 2022</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT4M">4 min</time>
+                                        </p>
+                                    </div>
 
-                </div>
+                                </div>
 
-              </div>
+                            </div>
 
-            </div>
+                        </div>
 
 
-            <div class="blog-card">
+                        <div class="blog-card">
 
-                <div class="blog-card-banner">
-                  <img src="https://www.rand.org/content/rand/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and/jcr:content/par/blogpost.crop.868x455.lb.webp/1686612120627.webp" alt="Fast web page loading on a $20 feature phone" width="250"
-                    class="blog-banner-img">
-                </div>
-  
-                <div class="blog-content-wrapper">
-  
-                  <button class="blog-topic text-tiny">Atmosphere</button>
-  
-                  <h3><a href="https://www.rand.org/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and.html" class="h3">We Aren't Helpless in the Face of Increasing Fires and Smoke</a></h3>
-  
-                  <p class="blog-text">
-                      As swaths of central and eastern North America faced skies choked with smoke last week, those of us in the West empathized. Our part of the continent watches sunsets turned blood red through bloodshot eyes every year.
-                  </p>
-  
-                  <div class="wrapper-flex">
-  
-                   
-  
-                    <div class="wrapper">
-                      <a href="https://www.rand.org/" class="h4">TheRANDBlog</a>
-  
-                      <p class="text-sm">
-                        <time datetime="2021-12-10">Jun 12, 2023</time>
-                        <span class="separator"></span>
-                        <ion-icon name="time-outline"></ion-icon>
-                        <time datetime="PT2M">5 min</time>
-                      </p>
-                    </div>
-  
-                  </div>
-  
-                </div>
-  
-              </div>
-  
-  
-              <div class="blog-card">
-  
-                <div class="blog-card-banner">
-                  <img src="https://cdn.downtoearth.org.in/library/large/2023-10-10/0.99398300_1696925336_odisha.png" alt="Accessibility Tips for Web Developers" width="250"
-                    class="blog-banner-img">
-                </div>
-  
-                <div class="blog-content-wrapper">
-  
-                  <button class="blog-topic text-tiny">Natural Disaster</button>
-  
-                  <h3><a href="https://www.downtoearth.org.in/blog/natural-disasters/25-years-of-odisha-super-cyclone-a-study-of-jagatsinghpur-shows-advances-the-way-ahead-92218" class="h3">25 years of Odisha Super Cyclone: A study of Jagatsinghpur shows advances & the way ahead</a></h3>
-  
-                  <p class="blog-text">
-                      As we approach the 25th year of the Super Cyclone in Odisha, there are several things we need to celebrate for the advances made in disaster preparedness, timely warnings and evacuation and response. But we also need to evaluate the gaps and plan better for upcoming climate-related disasters.
-  
-                      Global warming has heightened cyclone intensity, multiple rapid intensifications leading to unpredictability of cyclone behaviour, according to a study by the Indian National Centre for Ocean Information Services (INCOIS). This calls for better forecasting systems, strengthening of disaster response systems and infrastructure improvement.
-                  </p>
-  
-                  <div class="wrapper-flex">
-  
-                    <!-- <div class="profile-wrapper">
+                            <div class="blog-card-banner">
+                                <img src="https://www.rand.org/content/rand/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and/jcr:content/par/blogpost.crop.868x455.lb.webp/1686612120627.webp" alt="Fast web page loading on a $20 feature phone" width="250"
+                                    class="blog-banner-img">
+                            </div>
+
+                            <div class="blog-content-wrapper">
+
+                                <button class="blog-topic text-tiny">Atmosphere</button>
+
+                                <h3><a href="https://www.rand.org/pubs/commentary/2023/06/we-arent-helpless-in-the-face-of-increasing-fires-and.html" class="h3">We Aren't Helpless in the Face of Increasing Fires and Smoke</a></h3>
+
+                                <p class="blog-text">
+                                    As swaths of central and eastern North America faced skies choked with smoke last week, those of us in the West empathized. Our part of the continent watches sunsets turned blood red through bloodshot eyes every year.
+                                </p>
+
+                                <div class="wrapper-flex">
+
+
+
+                                    <div class="wrapper">
+                                        <a href="https://www.rand.org/" class="h4">TheRANDBlog</a>
+
+                                        <p class="text-sm">
+                                            <time datetime="2021-12-10">Jun 12, 2023</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT2M">5 min</time>
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="blog-card">
+
+                            <div class="blog-card-banner">
+                                <img src="https://cdn.downtoearth.org.in/library/large/2023-10-10/0.99398300_1696925336_odisha.png" alt="Accessibility Tips for Web Developers" width="250" class="blog-banner-img">
+                            </div>
+
+                            <div class="blog-content-wrapper">
+
+                                <button class="blog-topic text-tiny">Natural Disaster</button>
+
+                                <h3><a href="https://www.downtoearth.org.in/blog/natural-disasters/25-years-of-odisha-super-cyclone-a-study-of-jagatsinghpur-shows-advances-the-way-ahead-92218" class="h3">25 years of Odisha Super Cyclone: A study of Jagatsinghpur shows advances & the way ahead</a></h3>
+
+                                <p class="blog-text">
+                                    As we approach the 25th year of the Super Cyclone in Odisha, there are several things we need to celebrate for the advances made in disaster preparedness, timely warnings and evacuation and response. But we also need to evaluate the gaps and plan better
+                                    for upcoming climate-related disasters. Global warming has heightened cyclone intensity, multiple rapid intensifications leading to unpredictability of cyclone behaviour, according to a study by the Indian National
+                                    Centre for Ocean Information Services (INCOIS). This calls for better forecasting systems, strengthening of disaster response systems and infrastructure improvement.
+                                </p>
+
+                                <div class="wrapper-flex">
+
+                                    <!-- <div class="profile-wrapper">
                       <img src="./assets/images/author.png" alt="Julia walker" width="50">
                     </div> -->
-  
-                    <div class="wrapper">
-                      <a href="https://www.downtoearth.org.in/" class="h4">downtoearth</a>
-  
-                      <p class="text-sm">
-                        <time datetime="2021-11-28">Oct 10, 2023</time>
-                        <span class="separator"></span>
-                        <ion-icon name="time-outline"></ion-icon>
-                        <time datetime="PT4M">4 min</time>
-                      </p>
+
+                                    <div class="wrapper">
+                                        <a href="https://www.downtoearth.org.in/" class="h4">downtoearth</a>
+
+                                        <p class="text-sm">
+                                            <time datetime="2021-11-28">Oct 10, 2023</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT4M">4 min</time>
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
-  
-                  </div>
-  
+
+                    <button class="btn load-more">Load More</button>
+
                 </div>
-  
-              </div>
-
-          </div>
-
-          <button class="btn load-more">Load More</button>
-
-        </div>
 
 
 
 
 
-        <!--
+                <!--
           - ASIDE
         -->
 
-        <div class="aside">
+                <div class="aside">
 
-          <div class="topics">
+                    <div class="topics">
 
-            <h2 class="h2">Topics</h2>
+                        <h2 class="h2">Topics</h2>
 
-            <a href="#" class="topic-btn">
-              <div class="icon-box">
-                <ion-icon name="server-outline"></ion-icon>
-              </div>
+                        <a href="#" class="topic-btn">
+                            <div class="icon-box">
+                                <ion-icon name="server-outline"></ion-icon>
+                            </div>
 
-              <p>Disaster Management</p>
-            </a>
+                            <p>Disaster Management</p>
+                        </a>
 
-            <a href="#" class="topic-btn">
-              <div class="icon-box">
-                <ion-icon name="accessibility-outline"></ion-icon>
-              </div>
+                        <a href="#" class="topic-btn">
+                            <div class="icon-box">
+                                <ion-icon name="accessibility-outline"></ion-icon>
+                            </div>
 
-              <p>IOT Sensors</p>
-            </a>
+                            <p>IOT Sensors</p>
+                        </a>
 
-            <a href="#" class="topic-btn">
-              <div class="icon-box">
-                <ion-icon name="rocket-outline"></ion-icon>
-              </div>
+                        <a href="#" class="topic-btn">
+                            <div class="icon-box">
+                                <ion-icon name="rocket-outline"></ion-icon>
+                            </div>
 
-              <p>Preventive Measures</p>
-            </a>
+                            <p>Preventive Measures</p>
+                        </a>
 
-          </div>
+                    </div>
 
-          <div class="tags">
+                    <div class="tags">
 
-            <h2 class="h2">Tags</h2>
+                        <h2 class="h2">Tags</h2>
 
-            <div class="wrapper">
+                        <div class="wrapper">
 
-              <button class="hashtag">#disaster</button>
-              <button class="hashtag">#management</button>
-              <button class="hashtag">#sensors</button>
-              <button class="hashtag">#life</button>
-              <button class="hashtag">#prevention</button>
-              <button class="hashtag">#help</button>
-              
+                            <button class="hashtag">#disaster</button>
+                            <button class="hashtag">#management</button>
+                            <button class="hashtag">#sensors</button>
+                            <button class="hashtag">#life</button>
+                            <button class="hashtag">#prevention</button>
+                            <button class="hashtag">#help</button>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="contact">
+
+                        <h2 class="h2">Let's Talk</h2>
+
+                        <div class="wrapper">
+
+                            <p>
+                                "Explore how our disaster management system can be your ally in overcoming challenges. Let's initiate a conversation about securing a safer future together."
+                            </p>
+
+                            <ul class="social-link">
+
+                                <li>
+                                    <a href="#" class="icon-box discord">
+                                        <ion-icon name="logo-discord"></ion-icon>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="icon-box twitter">
+                                        <ion-icon name="logo-twitter"></ion-icon>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="icon-box facebook">
+                                        <ion-icon name="logo-facebook"></ion-icon>
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                    <div class="newsletter">
+
+                        <h2 class="h2">Newsletter</h2>
+
+                        <div class="wrapper">
+
+                            <p>
+                                Subscribe to our newsletter to be among the first to keep up with the latest updates.
+                            </p>
+
+                            <form action="#">
+                                <input type="email" name="email" placeholder="Email Address" required>
+
+                                <button type="submit" class="btn btn-primary">Subscribe</button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
-
-          </div>
-
-          <div class="contact">
-
-            <h2 class="h2">Let's Talk</h2>
-
-            <div class="wrapper">
-
-              <p>
-                "Explore how our disaster management system can be your ally in overcoming challenges. Let's initiate a conversation about securing a safer future together."
-              </p>
-
-              <ul class="social-link">
-
-                <li>
-                  <a href="#" class="icon-box discord">
-                    <ion-icon name="logo-discord"></ion-icon>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="icon-box twitter">
-                    <ion-icon name="logo-twitter"></ion-icon>
-                  </a>
-                </li>
-
-                <li>
-                  <a href="#" class="icon-box facebook">
-                    <ion-icon name="logo-facebook"></ion-icon>
-                  </a>
-                </li>
-
-              </ul>
-
-            </div>
-
-          </div>
-
-          <div class="newsletter">
-
-            <h2 class="h2">Newsletter</h2>
-
-            <div class="wrapper">
-
-              <p>
-                Subscribe to our newsletter to be among the first to keep up with the latest updates.
-              </p>
-
-              <form action="#">
-                <input type="email" name="email" placeholder="Email Address" required>
-
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-              </form>
-
-            </div>
-
-          </div>
 
         </div>
 
-      </div>
-
-    </div>
-
-  </main>
+    </main>
 
 
 
 
 
-  <!--
+    <!--
     - #FOOTER
   -->
 
-  <footer>
+    <footer>
 
-    <div class="container">
+        <div class="container">
 
-      <div class="wrapper">
+            <div class="wrapper">
 
-        <a href="#" class="footer-logo">
-          <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo"  width="150" class="logo-light">
-          <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-dark">
-        </a>
+                <a href="#" class="footer-logo">
+                    <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-light">
+                    <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-dark">
+                </a>
 
-        <p class="footer-text">
-            "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility, optimum Web performance, and seamless Database management, integrated with cutting-edge IoT sensors for enhanced real-time monitoring."
+                <p class="footer-text">
+                    "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility, optimum Web performance, and seamless Database management, integrated with cutting-edge IoT sensors for enhanced real-time monitoring."
+                </p>
+
+            </div>
+
+            <div class="wrapper">
+
+                <p class="footer-title">Quick Links</p>
+
+                <ul>
+
+                    <li>
+                        <a href="#" class="footer-link">Advertise with us</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">About Us</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">Contact Us</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="wrapper">
+
+                <p class="footer-title">Legal Stuff</p>
+
+                <ul>
+
+                    <li>
+                        <a href="#" class="footer-link">Privacy Notice</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">Cookie Policy</a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">Terms Of Use</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <p class="copyright">
+            &copy; Copyright 2024 <a href="#">RakshaNetra</a>
         </p>
 
-      </div>
-
-      <div class="wrapper">
-
-        <p class="footer-title">Quick Links</p>
-
-        <ul>
-
-          <li>
-            <a href="#" class="footer-link">Advertise with us</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">About Us</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">Contact Us</a>
-          </li>
-
-        </ul>
-
-      </div>
-
-      <div class="wrapper">
-
-        <p class="footer-title">Legal Stuff</p>
-
-        <ul>
-
-          <li>
-            <a href="#" class="footer-link">Privacy Notice</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">Cookie Policy</a>
-          </li>
-
-          <li>
-            <a href="#" class="footer-link">Terms Of Use</a>
-          </li>
-
-        </ul>
-
-      </div>
-
-    </div>
-
-    <p class="copyright">
-      &copy; Copyright 2024 <a href="#">RakshaNetra</a>
-    </p>
-
-  </footer>
+    </footer>
 
 
 
 
 
-  <!--
+    <!--
     - custom js link
   -->
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-  
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
-  <!--
+
+    <!--
     - ionicon link
   -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
 </body>
 
 </html>

@@ -11,12 +11,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
-        
         #chart-container {
             max-width: 800px;
             margin: 0 auto;
@@ -76,7 +74,7 @@
                         </li>
 
                         <li>
-                            <a href="#yourSensors" class="nav-link">Your Sensor</a>
+                            <a href="/urDHT_sensor" class="nav-link">Your Sensor</a>
                         </li>
 
                         {% if person.is_logged_in %}
@@ -116,7 +114,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="#yourSensors" class="nav-link">Your Sensors</a>
+                                <a href="/urDHT_sensor" class="nav-link">Your Sensors</a>
                             </li>
 
                             {% if person.is_logged_in %}
@@ -154,9 +152,11 @@
         </div>
 
     </header>
-    <div class="container"><h2 class="h2">MPU Sensor Information</h2></div>
+    <div class="container">
+        <h2 class="h2">MPU Sensor Information</h2>
+    </div>
     <!-- Content specific to MPU sensor -->
-    
+
     <!-- Add specific content here -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

@@ -36,7 +36,7 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
-person = {"is_logged_in": False, "name": "", "email": "", "uid": ""}
+person = {"is_logged_in": False, "name": "", "email": "", "uid": "","DHT":False,"MPU":False}
 
 # Removed Firebase initialization and authentication code
 # Removed 'db' object since it's not used
@@ -76,6 +76,7 @@ def result():
             #Get the name of the user
             data = db.child("users").get()
             person["name"] = data.val()[person["uid"]]["name"]
+            person["DHT"]=data.val()[person["uid"]]["DHT"]
             #Redirect to welcome page
             return redirect(url_for('home'))
         except:
@@ -106,8 +107,10 @@ def register():
             person["email"] = user["email"]
             person["uid"] = user["localId"]
             person["name"] = name
+            person["DHT"]=True
+            person["MPU"]=False
             #Append data to the firebase realtime database
-            data = {"name": name, "email": email}
+            data = {"name": name, "email": email,"DHT":True,"MPU":False}
             db.child("users").child(person["uid"]).set(data)
             #Go to welcome page
             return redirect(url_for('home'))
@@ -181,6 +184,16 @@ def before_request():
 @app.route('/mpu_sensor')
 def mpu_sensor():
     return render_template('mpuSensor.html', person=person)
+@app.before_request
+def before_request():
+    if request.endpoint == 'urdht_sensor' and not person["is_logged_in"]:
+        # Redirect to login page if not logged in
+        return redirect(url_for('login'))
+    if request.endpoint == 'urdht_sensor' and not person["DHT"]:
+        return redirect(url_for('home'))
+@app.route('/urDHT_sensor')
+def urdht_sensor():
+    return render_template('yourSensor_DHT.html', person=person)
 
 @app.route('/predict', methods=['POST'])
 def predict():
