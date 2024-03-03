@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensors</title>
-    <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
+    <title>Authority Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -17,16 +16,12 @@
 
 <body class="light-theme">
     <header>
-
         <div class="container">
-
             <nav class="navbar">
-
-                <a href="/">
-                    <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-light">
-                    <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-dark">
+                <a href="/authorityHome">
+                    <img src="/static/govt.png" alt="Govt logo" width="100" class="logo-light">
+                    <img src="/static/govt_dark_bg.png" alt="Govt logo" width="100" class="logo-dark">
                 </a>
-
                 <div class="btn-group">
 
                     <button class="theme-btn theme-btn-mobile light">
@@ -39,7 +34,6 @@
                     </button>
 
                 </div>
-
                 <div class="flex-wrapper">
 
                     <ul class="desktop-nav">
@@ -49,19 +43,19 @@
                         </li>
 
                         <li>
-                            <a href="/input_fields" class="nav-link">Temperature</a>
+                            <a href="/AboutUs" class="nav-link">About Us</a>
                         </li>
 
                         <li>
-                            <a href="/sensors" class="nav-link">Sensor</a>
+                            <a href="/OurWork" class="nav-link">Our Work</a>
                         </li>
 
                         <li>
-                            <a href="/urDHT_sensor" class="nav-link">Your Sensor</a>
+                            <a href="/ContactUs" class="nav-link">Contact Us</a>
                         </li>
 
-                        {% if person.is_logged_in %}
-                        <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+                        {% if authority.is_logged_in %}
+                        <li style="float:right;"><a href="{{ url_for('authlogout') }}">Logout, {{ authority.name }}</a></li>
                         {% endif %}
 
                     </ul>
@@ -72,7 +66,6 @@
                     </button>
 
                 </div>
-
                 <div class="mobile-nav">
 
                     <button class="nav-close-btn">
@@ -97,11 +90,11 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/urDHT_sensor" class="nav-link">Your Sensors</a>
+                                <a href="#yourSensors" class="nav-link">Your Sensors</a>
                             </li>
 
-                            {% if person.is_logged_in %}
-                            <li><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+                            {% if authority.is_logged_in %}
+                            <li><a href="{{ url_for('authlogout') }}">Logout, {{ authority.name }}</a></li>
                             {% endif %}
 
                         </ul>
@@ -109,60 +102,61 @@
                     </div>
 
                     <!-- <div>
-                
-                            <p class="h3 nav-title">Topics</p>
-                
-                            <ul>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">Disaster</a>
-                                </li>
-                
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">Sensors</a>
-                                </li>
-                
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">Prevention</a>
-                                </li>
-                            </ul>
-                
-                        </div> -->
+            
+                        <p class="h3 nav-title">Topics</p>
+            
+                        <ul>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Disaster</a>
+                            </li>
+            
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Sensors</a>
+                            </li>
+            
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Prevention</a>
+                            </li>
+                        </ul>
+            
+                    </div> -->
 
                 </div>
-
             </nav>
-
         </div>
-
     </header>
-    <div class="main">
-        <div class="container">
+    <main>
 
-            <div class="blog">
-                <h2 class="h2">Alert</h2>
-                <div id="messageContainer" class="container"></div>
-                <button class="btn btn-danger" onclick="sendAlert()">Alert</button>
+        <!--
+      - #HERO SECTION
+    -->
+        <div class="main">
+            <div class="container">
 
+                <div class="blog">
+                    <div class="left">
+                        <h1 class="h1">Home</h1>
+                        <div id="messageContainer" class="container"></div>
+                    </div>
+                    <button id="alertButton" class="btn btn-danger d-none" onclick="sendEmergencyAlert()">Emergency</button>
+                </div>
             </div>
         </div>
-    </div>
-    <footer>
 
+    </main>
+
+    <footer>
         <div class="container">
 
             <div class="wrapper">
-
-                <!-- <a href="#" class="footer-logo">
-                    <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-light">
-                    <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-dark">
-                </a> -->
-
+                <a href="#" class="footer-logo">
+                    <img src="/static/govt.png" alt="Govt Logo" width="150" class="logo-light">
+                    <img src="/static/govt_dark_bg.png" alt="Govt Logo" width="150" class="logo-dark">
+                </a>
                 <p class="footer-text">
-                    "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility, optimum Web performance, and seamless Database management, integrated with cutting-edge IoT sensors for enhanced real-time monitoring."
+                    Government Of India
                 </p>
-
             </div>
-
             <div class="wrapper">
 
                 <p class="footer-title">Quick Links</p>
@@ -212,29 +206,30 @@
         <p class="copyright">
             &copy; Copyright 2024 <a href="#">RakshaNetra</a>
         </p>
-
     </footer>
     <script>
         var socket = io.connect('http://localhost:5000');
 
-        function sendAlert() {
-            socket.emit('alert_clicked');
+        function sendEmergencyAlert() {
+            socket.emit('emergency_alert');
             console.log("Socket Sent")
-            var timestamp = new Date().toLocaleString();
-            console.log('Alert Sent at:', timestamp);
         }
-        socket.on('emergency_alert', function(message) {
+        socket.on('alert_message', function(message) {
             var messageContainer = document.getElementById('messageContainer');
             var messageElement = document.createElement('p');
             var timestamp = new Date().toLocaleString();
-            console.log('Authority responded at:', timestamp);
-            messageElement.textContent = "Authority responded at: " + timestamp + " " + message;
+            console.log('Alert received at:', timestamp);
+            messageElement.textContent = "Alert received at: " + timestamp + " " + message;
             messageContainer.appendChild(messageElement);
+            document.getElementById('alertButton').classList.remove('d-none');
         });
     </script>
-
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
+
+    <!--
+    - ionicon link
+  -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 

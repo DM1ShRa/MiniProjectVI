@@ -118,7 +118,7 @@
                             </li>
 
                             {% if person.is_logged_in %}
-                            <li><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
+                            <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
                             {% endif %}
 
                         </ul>

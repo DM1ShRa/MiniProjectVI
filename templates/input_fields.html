@@ -140,16 +140,20 @@
                 <h2 class="h2">ML Model and Map Integration</h2>
                 <form action="/predict" method="post">
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">°C</span>
-                        <input type="text" class="form-control" name="temperature_celsius" placeholder="Temprature" aria-label="Temprature" aria-describedby="basic-addon1" required>
+                        <span class="input-group-text" id="basic-addon1">Humidity 3pm:</span>
+                        <input type="text" class="form-control" name="Humidity3pm" placeholder="humidity_3pm" aria-label="humidity_3pm" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">Country</span>
-                        <input type="text" class="form-control" name="country" placeholder="Country" aria-label="Country" aria-describedby="basic-addon1" required>
+                        <span class="input-group-text" id="basic-addon1">humidity 9am:</span>
+                        <input type="text" class="form-control" name="Humidity9am" placeholder="humidity_9am" aria-label="humidity_9am" aria-describedby="basic-addon1" required>
                     </div>
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">Region</span>
-                        <input type="text" class="form-control" name="region" placeholder="Region" aria-label="Region" aria-describedby="basic-addon1" required>
+                        <span class="input-group-text" id="basic-addon1">Temperature 9am:</span>
+                        <input type="text" class="form-control" name="Temp9am" placeholder="Temperature 9am" aria-label="Temperature 9am" aria-describedby="basic-addon1" required>
+                    </div>
+                    <div class="input-group w-25 mb-3">
+                        <span class="input-group-text" id="basic-addon1">Temperature 3pm:</span>
+                        <input type="text" class="form-control" name="Temp3pm" placeholder="Temperature 3pm" aria-label="Temperature 3pm" aria-describedby="basic-addon1" required>
                     </div>
                     <button type="submit" class="btn btn-success">Predict</button>
                 </form>

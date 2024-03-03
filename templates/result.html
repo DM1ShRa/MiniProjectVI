@@ -9,34 +9,9 @@
 </head>
 
 <body>
-    <h1>Prediction Result</h1>
-
-    {% if prediction == 'Low' %}
-    <div class="alert alert-success" role="alert">
-        The predicted alert category is: {{ prediction }}
-    </div>
-    {% elif prediction == 'Mild' %}
-    <div class="alert alert-info" role="alert">
-        The predicted alert category is: {{ prediction }}
-    </div>
-    {% elif prediction == 'Moderate' %}
-    <div class="alert alert-warning" role="alert">
-        The predicted alert category is: {{ prediction }}
-    </div>
-    {% elif prediction == 'High' %}
-    <div class="alert alert-danger" role="alert">
-        The predicted alert category is: {{ prediction }}
-    </div>
-    {% elif prediction == 'Very High' %}
-    <div class="alert alert-danger" role="alert">
-        The predicted alert category is: {{ prediction }}
-    </div>
-    {% else %}
-    <div class="alert alert-secondary" role="alert">
-        The predicted alert category is: {{ prediction }}
-    </div>
-    {% endif %}
-
+    <h1>Temperature Prediction Result</h1>
+    <p>Minimum Temperature Prediction: {{ min_temp_prediction }}</p>
+    <p>Maximum Temperature Prediction: {{ max_temp_prediction }}</p>
     <a href="/">Go back to home</a>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

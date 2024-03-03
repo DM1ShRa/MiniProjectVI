@@ -1,4 +1,10 @@
 from flask import Flask, render_template,redirect, request, jsonify, session, abort, url_for
+import joblib
+import requests
+import firebase_admin
+import secrets
+from firebase_admin import credentials, db
+from flask_socketio import SocketIO, emit
 import time
 import threading
 import pandas as pd
@@ -10,8 +16,12 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
+secret_key = secrets.token_hex(16)
+
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
+app.config['SECRET_KEY'] = secret_key
+socketio = SocketIO(app, cors_allowed_origins='*')
 firebase_config = {
     "apiKey": "AIzaSyAtZb6-LRZMpCpPasCbk_vycTcRQ5fl7KA",
     "authDomain": "dpps-23928.firebaseapp.com",
@@ -22,6 +32,9 @@ firebase_config = {
     "appId": "1:114905554074:web:d527757221e8fabe115323",
     "measurementId": "G-ES3ZDPZC4F",
 }
+firebase = pyrebase.initialize_app(firebase_config)
+auth = firebase.auth()
+fb = firebase.database()
 config = {
   "apiKey": "AIzaSyC_sYbyfyI9l7O5yzMGMltS7Jm051HNDU0",
   "authDomain": "auth-3538a.firebaseapp.com",
@@ -36,22 +49,139 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
+firebaseConfig = {
+  "apiKey": "AIzaSyBn-z_lpT8UM4qNViGuaJ0qFmPW9b49n5Y",
+  "authDomain": "authorityauth-810cd.firebaseapp.com",
+  "databaseURL": "https://authorityauth-810cd-default-rtdb.firebaseio.com",
+  "projectId": "authorityauth-810cd",
+  "storageBucket": "authorityauth-810cd.appspot.com",
+  "messagingSenderId": "414719593107",
+  "appId": "1:414719593107:web:399817fc20c85c73649b66"
+}
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+authoritydb = firebase.database()
+
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "","DHT":False,"MPU":False}
+authority={"is_logged_in": False, "name": "", "email": "", "uid": ""}
 
 # Removed Firebase initialization and authentication code
 # Removed 'db' object since it's not used
+rf_regressor_min_temp = joblib.load('rf_regressor_min_temp.joblib')
+rf_regressor_max_temp = joblib.load('rf_regressor_max_temp.joblib')
 
 data_path = "/Sensor/DHT/Temperature"
+@app.before_request
+def before_request():
+    if request.endpoint == 'input' and not person["is_logged_in"]:
+        return redirect(url_for('login'))
+    elif request.endpoint == 'sensors' and not person["is_logged_in"]:
+        return redirect(url_for('login'))
+    elif request.endpoint == 'dht_sensor' and not person["is_logged_in"]:
+        return redirect(url_for('login'))
+    elif request.endpoint == 'mpu_sensor' and not person["is_logged_in"]:
+        return redirect(url_for('login'))
+    elif request.endpoint == 'urdht_sensor' and (not person["is_logged_in"] or not person["DHT"]):
+        return redirect(url_for('home'))
 
 @app.route("/login")
 def login():
     return render_template("login.html")
+@app.route("/authoritylogin")
+def authoritylogin():
+    return render_template("authority_login.html")
 
 #Sign up/ Register
 @app.route("/signup")
 def signup():
     return render_template("signup.html")
+@app.route("/authoritysignup")
+def authosignup():
+    return render_template("authority_signup.html")
 
+@app.route('/authorityHome')
+def authoHome():
+    if authority["is_logged_in"] == True:
+        return render_template("authority_home.html",authority=authority)
+    else:
+        return redirect(url_for('authoritylogin'))
+@socketio.on('alert_clicked')
+def handle_alert():
+    message = "There is an Emergency!"
+    emit('alert_message', message, broadcast=True)
+@socketio.on('emergency_alert')
+def handle_emergencyalert():
+    message ="Authority is coming!"
+    emit('emergency_alert', message, broadcast=True)
+@app.route("/authorityresult", methods = ["POST", "GET"])
+def authoresult():
+    if request.method == "POST":
+        result = request.form
+        email = result["email"]
+        password = result["pass"]
+        try:
+            govtAuthority = auth.sign_in_with_email_and_password(email, password)
+            if govtAuthority is None:
+                # Handle case where authentication fails
+                raise Exception("Authentication failed")
+            global authority
+            authority["is_logged_in"] = True
+            authority["email"] = govtAuthority["email"]
+            authority["uid"] = govtAuthority["localId"]
+            data = authoritydb.child("authorities").get()
+            authority["name"] = data.val()[authority["uid"]]["name"]
+            return redirect(url_for('authoHome'))
+        except Exception as e:
+            print("Error occurred during authority login:", e)
+            return redirect(url_for('authoritylogin'))
+    else:
+        if authority["is_logged_in"]:
+            return redirect(url_for('authoHome'))
+        else:
+            return redirect(url_for('authoritylogin'))
+@app.route("/authorityregister", methods=["POST", "GET"])
+def authorityregister():
+    if request.method == "POST":  # Only listen to POST
+        result = request.form  # Get the data submitted
+        email = result["authemail"]
+        password = result["authpass"]
+        name = result["authname"]
+        try:
+            # Try creating the user account using the provided data
+            auth.create_user_with_email_and_password(email, password)
+            # Login the user
+            govtAuth = auth.sign_in_with_email_and_password(email, password)
+            # Add data to global person
+            global authority
+            authority["is_logged_in"] = True
+            authority["email"] = govtAuth["email"]
+            authority["uid"] = govtAuth["localId"]
+            authority["name"] = name
+            # Append data to the firebase realtime database
+            data = {"name": name, "email": email}
+            authoritydb.child("authorities").child(authority["uid"]).set(data)
+            # Go to welcome page
+            return redirect(url_for('authoHome'))
+        except Exception as e:
+            # Print out the error for debugging
+            print("Error occurred during registration:", e)
+            # If there is any error, redirect to register
+            return redirect(url_for('authorityregister'))
+
+    else:
+        if authority["is_logged_in"] == True:
+            return redirect(url_for('authoHome'))
+        else:
+            return redirect(url_for('authorityregister'))
+
+@app.route('/authlogout')
+def authlogout():
+    global authority
+    authority["is_logged_in"] = False
+    authority["name"] = ""
+    authority["email"] = ""
+    authority["uid"] = ""
+    return redirect(url_for('authoritylogin'))
 @app.route('/')
 def home():
     if person["is_logged_in"] == True:
@@ -79,8 +209,9 @@ def result():
             person["DHT"]=data.val()[person["uid"]]["DHT"]
             #Redirect to welcome page
             return redirect(url_for('home'))
-        except:
+        except Exception as e:
             #If there is any error, redirect back to login
+            print("Error occurred during login:", e)
             return redirect(url_for('login'))
     else:
         if person["is_logged_in"] == True:
@@ -147,122 +278,50 @@ def update_data():
         time.sleep(3)
 
 def get_updated_value():
-    # Simulated data fetching from Firebase (replace this with your actual data retrieval)
-    return 25.0  # Replace with your logic to get the updated value
-
-@app.before_request
-def before_request():
-    if request.endpoint == 'input' and not person["is_logged_in"]:
-        # Redirect to login page if not logged in
-        return redirect(url_for('login'))
+    data = fb.child("/Sensor/DHT/HeatIndex").get().val()
+    return data
 
 @app.route('/input_fields')
 def input():
     return render_template('input_fields.html', person=person)
-@app.before_request
-def before_request():
-    if request.endpoint == 'sensors' and not person["is_logged_in"]:
-        # Redirect to login page if not logged in
-        return redirect(url_for('login'))
 @app.route('/sensors')
 def sensors():
     return render_template('sensors.html', person=person)
-@app.before_request
-def before_request():
-    if request.endpoint == 'dht_sensor' and not person["is_logged_in"]:
-        # Redirect to login page if not logged in
-        return redirect(url_for('login'))
 @app.route('/dht_sensor')
 def dht_sensor():
     return render_template('dhtSensor.html', person=person)
-
-@app.before_request
-def before_request():
-    if request.endpoint == 'mpu_sensor' and not person["is_logged_in"]:
-        # Redirect to login page if not logged in
-        return redirect(url_for('login'))
 @app.route('/mpu_sensor')
 def mpu_sensor():
     return render_template('mpuSensor.html', person=person)
-@app.before_request
-def before_request():
-    if request.endpoint == 'urdht_sensor' and not person["is_logged_in"]:
-        # Redirect to login page if not logged in
-        return redirect(url_for('login'))
-    if request.endpoint == 'urdht_sensor' and not person["DHT"]:
-        return redirect(url_for('home'))
 @app.route('/urDHT_sensor')
 def urdht_sensor():
     return render_template('yourSensor_DHT.html', person=person)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        # Get user input from the form
-        temperature = float(request.form['temperature_celsius'])
-        country = request.form['country']
-        region = request.form['region']
-
-        # Load your dataset
-        data = pd.read_csv("miniProjectData.csv")
-
-        # Train the machine learning model
-        X = data[['latitude', 'longitude', 'temperature_celsius', 'country', 'region']]
-        y = data['Alert']
-
-        categorical_columns = ['country', 'region']
-        preprocessor = ColumnTransformer(
-            transformers=[
-                ('cat', OneHotEncoder(), categorical_columns),
-            ],
-            remainder='passthrough'
-        )
-
-        pipeline = Pipeline([
-            ('preprocessor', preprocessor),
-            ('classifier', RandomForestClassifier(random_state=42))
-        ])
-
-        pipeline.fit(X, y)
-
-        # Make prediction using the trained model
-        user_input = pd.DataFrame({
-            'country': [country],
-            'region': [region],
-            'temperature_celsius': [temperature],
-            'latitude': [0],  # Replace with the user's latitude
-            'longitude': [0]  # Replace with the user's longitude
-        })
-
-        prediction = pipeline.predict(user_input)[0]
-
-        # Create a map using Folium
-        map_center = [data['latitude'].mean(), data['longitude'].mean()]
-        my_map = folium.Map(location=map_center, zoom_start=6)
-
-        # Create MarkerCluster for better visualization of markers
-        marker_cluster = MarkerCluster().add_to(my_map)
-
-        # Add markers for each data point with popup information
-        for i, row in data.iterrows():
-            folium.Marker([row['latitude'], row['longitude']],
-                          popup=f"Location: {row['location_name']}<br>Temperature: {row['temperature_celsius']}°C<br> Alert: {row['Alert']}").add_to(marker_cluster)
-
-        # Create a HeatMap layer based on alert categories
-        heat_data = [[row['latitude'], row['longitude']] for i, row in data.iterrows()]
-        HeatMap(heat_data).add_to(my_map)
-
-        # Save the map as an HTML file
-        my_map.save('templates/map_with_heatmap.html')
-
-        return render_template('index.html', prediction=prediction)
-
-    except Exception as e:
-        return render_template('error.html', error=str(e))
+    # Get input data from the request
+    input_data = request.form
+    
+    # Extract features from input data
+    features = [
+        input_data['Humidity9am'],
+        input_data['Humidity3pm'],
+        input_data['Temp9am'],
+        input_data['Temp3pm']
+    ]
+    
+    # Make predictions using the trained models
+    min_temp_prediction = rf_regressor_min_temp.predict([features])[0]
+    max_temp_prediction = rf_regressor_max_temp.predict([features])[0]
+    
+    # Create a response with the predictions
+    
+    # Return the response as JSON
+    return render_template('result.html', min_temp_prediction=min_temp_prediction, max_temp_prediction=max_temp_prediction)
     
 if __name__ == '__main__':
     # Start a thread for updating data in the background
     data_update_thread = threading.Thread(target=update_data)
     data_update_thread.start()
     # Run the Flask app
-    app.run(debug=True)
+    socketio.run(app, debug=True,allow_unsafe_werkzeug=True)
