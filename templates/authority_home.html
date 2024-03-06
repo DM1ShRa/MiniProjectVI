@@ -215,9 +215,7 @@
             console.log("Socket Sent")
 
         }
-        socket.on('alert_message', function(message) {
 
-        });
         var alertTriggered = false;
         socket.on('temperature_alert', function(temperature) {
             if (!alertTriggered) {
