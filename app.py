@@ -65,8 +65,6 @@ authoritydb = firebase.database()
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "","DHT":False,"MPU":False}
 authority={"is_logged_in": False, "name": "", "email": "", "uid": ""}
 
-# Removed Firebase initialization and authentication code
-# Removed 'db' object since it's not used
 rf_regressor_min_temp = joblib.load('rf_regressor_min_temp.joblib')
 rf_regressor_max_temp = joblib.load('rf_regressor_max_temp.joblib')
 
@@ -113,6 +111,12 @@ def handle_alert():
 def handle_emergencyalert():
     message ="Authority is coming!"
     emit('emergency_alert', message, broadcast=True)
+@socketio.on('temperature_alert')
+def handle_temperature_alert(data):
+    temperature = data.get('temperature')
+    # Here, you can perform any necessary action, such as logging the alert or sending a notification to relevant parties
+    # For now, let's emit the alert message to the authority home page
+    emit('temperature_alert', temperature, broadcast=True)
 @app.route("/authorityresult", methods = ["POST", "GET"])
 def authoresult():
     if request.method == "POST":

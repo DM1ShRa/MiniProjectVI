@@ -17,6 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
     <style>
         #chart-container {
             max-width: 800px;
@@ -182,7 +183,10 @@
                     <div class="chart">
                         <canvas id="realtimeChart" width="400" height="200"></canvas>
                     </div>
-                </div> <br><br>
+                </div>
+                <br>
+                <div id="messageContainer" class="container"></div>
+                <br>
                 <h2 class="h2">Real-time Data Table</h2>
                 <table id="sensorDataTable">
                     <thead>
@@ -205,6 +209,7 @@
     </div>
     <script>
         // Initialize an empty chart
+        var socket = io.connect('http://localhost:5000');
         var ctx = document.getElementById('realtimeChart').getContext('2d');
         var chart = new Chart(ctx, {
             type: 'line',
@@ -287,9 +292,43 @@
             // Update the chart
             chart.update();
         }
+
+        const temperatureThreshold = 30;
+
+        function monitorTemperatureUpdates() {
+            fetch('/realtime_data')
+                .then(response => response.json())
+                .then(data => {
+                    if (isValidData(data)) {
+                        // Update the chart and table with new data
+                        // Check if temperature exceeds threshold
+                        if (data.value > temperatureThreshold) {
+                            // Temperature exceeds threshold, send alert to authority home page
+                            sendAlertToAuthorityHomePage(data.value);
+                        }
+                    }
+                });
+        }
+
+        function sendAlertToAuthorityHomePage(temperature) {
+            // Emit alert message to authority home page using Socket.IO
+            socket.emit('temperature_alert', {
+                temperature: temperature
+            });
+            console.log('Temperature alert sent to authority home page:', temperature);
+        }
+        socket.on('emergency_alert', function(message) {
+            var messageContainer = document.getElementById('messageContainer');
+            var messageElement = document.createElement('p');
+            var timestamp = new Date().toLocaleString();
+            console.log('Authority responded at:', timestamp);
+            messageElement.textContent = "Authority responded at: " + timestamp + " " + message;
+            messageContainer.appendChild(messageElement);
+        });
         // Update the chart every 3 seconds
         setInterval(updateChart, 3000);
         setInterval(updateTableData, 3000);
+        setInterval(monitorTemperatureUpdates, 3000);
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>

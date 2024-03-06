@@ -213,15 +213,22 @@
         function sendEmergencyAlert() {
             socket.emit('emergency_alert');
             console.log("Socket Sent")
+
         }
         socket.on('alert_message', function(message) {
+
+        });
+        socket.on('temperature_alert', function(temperature) {
             var messageContainer = document.getElementById('messageContainer');
             var messageElement = document.createElement('p');
             var timestamp = new Date().toLocaleString();
+            var message = 'Temperature alert: Temperature exceeded threshold (' + temperature + '°C)';
             console.log('Alert received at:', timestamp);
             messageElement.textContent = "Alert received at: " + timestamp + " " + message;
             messageContainer.appendChild(messageElement);
             document.getElementById('alertButton').classList.remove('d-none');
+            // Handle the temperature alert here, such as displaying a notification to the user
+            // You can also perform other actions as needed, such as updating UI elements or logging the alert
         });
     </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
