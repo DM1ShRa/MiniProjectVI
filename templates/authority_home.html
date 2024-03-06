@@ -39,19 +39,19 @@
                     <ul class="desktop-nav">
 
                         <li>
-                            <a href="/" class="nav-link">Home</a>
+                            <a href="/authorityHome" class="nav-link">Home</a>
                         </li>
 
                         <li>
-                            <a href="/AboutUs" class="nav-link">About Us</a>
+                            <a href="#" class="nav-link">About Us</a>
                         </li>
 
                         <li>
-                            <a href="/OurWork" class="nav-link">Our Work</a>
+                            <a href="#" class="nav-link">Our Work</a>
                         </li>
 
                         <li>
-                            <a href="/ContactUs" class="nav-link">Contact Us</a>
+                            <a href="#" class="nav-link">Contact Us</a>
                         </li>
 
                         {% if authority.is_logged_in %}
@@ -78,19 +78,19 @@
 
                         <ul>
                             <li class="nav-item">
-                                <a href="/" class="nav-link">Home</a>
+                                <a href="/authorityHome" class="nav-link">Home</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="/input_fields" class="nav-link">Temperature</a>
+                                <a href="#" class="nav-link">About Us</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="/sensors" class="nav-link">Sensors</a>
+                                <a href="#" class="nav-link">Our Work</a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="#yourSensors" class="nav-link">Your Sensors</a>
+                                <a href="#" class="nav-link">Contact Us</a>
                             </li>
 
                             {% if authority.is_logged_in %}
@@ -215,6 +215,15 @@
             console.log("Socket Sent")
 
         }
+        socket.on('alert_message', function(message) {
+            var messageContainer = document.getElementById('messageContainer');
+            var messageElement = document.createElement('p');
+            var timestamp = new Date().toLocaleString();
+            console.log('Alert received at:', timestamp);
+            messageElement.textContent = "Alert received at: " + timestamp + " " + message;
+            messageContainer.appendChild(messageElement);
+            document.getElementById('alertButton').classList.remove('d-none');
+        });
 
         var alertTriggered = false;
         socket.on('temperature_alert', function(temperature) {
