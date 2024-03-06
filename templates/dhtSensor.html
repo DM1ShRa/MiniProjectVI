@@ -184,9 +184,9 @@
                         <canvas id="realtimeChart" width="400" height="200"></canvas>
                     </div>
                 </div>
-                <br>
-                <div id="messageContainer" class="container"></div>
-                <br>
+                <br><br>
+                <div class="btn btn-danger d-none" id="messageContainer" class="container"></div>
+                <br><br>
                 <h2 class="h2">Real-time Data Table</h2>
                 <table id="sensorDataTable">
                     <thead>
@@ -323,7 +323,9 @@
             var timestamp = new Date().toLocaleString();
             console.log('Authority responded at:', timestamp);
             messageElement.textContent = "Authority responded at: " + timestamp + " " + message;
+            document.getElementById('messageContainer').classList.remove('d-none');
             messageContainer.appendChild(messageElement);
+            alert("Authority responded at: " + timestamp + " " + message);
         });
         // Update the chart every 3 seconds
         setInterval(updateChart, 3000);
