@@ -16,12 +16,15 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
+
+
 secret_key = secrets.token_hex(16)
 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = secret_key
 socketio = SocketIO(app, cors_allowed_origins='*')
+
 firebase_config = {
     "apiKey": "AIzaSyAtZb6-LRZMpCpPasCbk_vycTcRQ5fl7KA",
     "authDomain": "dpps-23928.firebaseapp.com",
@@ -108,8 +111,7 @@ def handle_alert():
     message = "There is an Emergency!"
     emit('alert_message', message, broadcast=True)
 @socketio.on('emergency_alert')
-def handle_emergencyalert():
-    message ="Authority is coming!"
+def handle_emergencyalert(message):
     emit('emergency_alert', message, broadcast=True)
 @socketio.on('temperature_alert')
 def handle_temperature_alert(data):

@@ -139,7 +139,9 @@
                         <div id="messageContainer" class="container"></div>
                     </div>
                     <button id="alertButton" class="btn btn-danger d-none" onclick="sendEmergencyAlert()">Emergency</button>
+
                 </div>
+
             </div>
         </div>
 
@@ -210,8 +212,23 @@
     <script>
         var socket = io.connect('http://localhost:5000');
 
+        function calculateETA(distance, averageSpeed) {
+            // Assuming averageSpeed is in km/h
+            // Calculate ETA in hours
+            var etaHours = distance / averageSpeed;
+            // Convert hours to minutes
+            var etaMinutes = etaHours * 60;
+            return etaMinutes.toFixed(0); // Round to the nearest minute
+        }
+
         function sendEmergencyAlert() {
-            socket.emit('emergency_alert');
+            var distance = 10; // Example distance in kilometers
+            var averageSpeed = 50; // Example average speed in km/h
+            // Calculate ETA
+            var etaMinutes = calculateETA(distance, averageSpeed);
+            // Prepare the message with ETA
+            var messageWithETA = "Authority is coming! Estimated time: " + etaMinutes + " minutes.";
+            socket.emit('emergency_alert', messageWithETA);
             console.log("Socket Sent")
 
         }
