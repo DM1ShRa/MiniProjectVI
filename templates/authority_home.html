@@ -14,6 +14,30 @@
     <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #sensorDataTable {
+            display: none;
+            /* Hide the table initially */
+        }
+        
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+    </style>
 </head>
 
 <body class="light-theme">
@@ -145,6 +169,17 @@
                         <div id="map" style="height: 400px;"></div>
                     </div>
                     <button id="alertButton" class="btn btn-danger d-none" onclick="sendEmergencyAlert()">Emergency</button>
+                    <table id="sensorDataTable">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Temperature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Table content will be dynamically added here -->
+                        </tbody>
+                    </table>
 
                 </div>
 
@@ -238,6 +273,38 @@
             console.log("Socket Sent")
 
         }
+
+        function updateTableData() {
+            // Fetch real-time data from the Flask route
+            fetch('/realtime_data')
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the data is valid before updating the table
+                    if (isValidData(data)) {
+                        // Update the table with new data
+                        updateTable(data);
+                    }
+                });
+        }
+
+        function updateTable(data) {
+            var tableBody = document.getElementById('sensorDataTable').getElementsByTagName('tbody')[0];
+            var newRow = tableBody.insertRow();
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            cell1.textContent = data.timestamp || 'N/A';
+            cell2.textContent = data.value || 'N/A';
+            if (tableBody.rows.length > 10) {
+                tableBody.deleteRow(0);
+            }
+            console.log(data)
+        }
+
+        function isValidData(data) {
+            // Add your validation logic here
+            // For example, check if data.timestamp and data.value exist and are of the correct type
+            return data && typeof data.timestamp === 'number' && typeof data.value === 'number';
+        }
         socket.on('alert_message', function(message) {
             var messageContainer = document.getElementById('messageContainer');
             var messageElement = document.createElement('p');
@@ -246,6 +313,8 @@
             messageElement.textContent = "Alert received at: " + timestamp + " " + message;
             messageContainer.appendChild(messageElement);
             document.getElementById('alertButton').classList.remove('d-none');
+
+
         });
 
         var alertTriggered = false;
@@ -270,12 +339,14 @@
                 messageElement.textContent = "Alert received at: " + timestamp + " " + message;
                 messageContainer.appendChild(messageElement);
                 document.getElementById('alertButton').classList.remove('d-none');
+                document.getElementById('sensorDataTable').style.display = 'table';
                 alertTriggered = true;
             }
 
             // Handle the temperature alert here, such as displaying a notification to the user
             // You can also perform other actions as needed, such as updating UI elements or logging the alert
         });
+        setInterval(updateTableData, 3000);
     </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
