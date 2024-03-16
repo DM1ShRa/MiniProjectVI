@@ -12,6 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 
 <body class="light-theme">
@@ -137,6 +139,10 @@
                     <div class="left">
                         <h1 class="h1">Home</h1>
                         <div id="messageContainer" class="container"></div>
+
+                    </div>
+                    <div class="mb-3">
+                        <div id="map" style="height: 400px;"></div>
                     </div>
                     <button id="alertButton" class="btn btn-danger d-none" onclick="sendEmergencyAlert()">Emergency</button>
 
@@ -243,18 +249,30 @@
         });
 
         var alertTriggered = false;
-        socket.on('temperature_alert', function(temperature) {
+        var map = L.map('map').setView([0, 0], 13); // Dummy coordinates for initialization
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        socket.on('temperature_alert', function(data) {
+            var temperature = data.temperature;
+            var user_latitude = data.user_latitude;
+            var user_longitude = data.user_longitude;
+            map.setView([user_latitude, user_longitude], 13);
+
+            // Add a marker at the specified location
+            var marker = L.marker([user_latitude, user_longitude]).addTo(map);
+            marker.bindPopup('Temperature alert: ' + temperature + '°C');
             if (!alertTriggered) {
                 var messageContainer = document.getElementById('messageContainer');
                 var messageElement = document.createElement('p');
                 var timestamp = new Date().toLocaleString();
-                var message = 'Temperature alert: Temperature exceeded threshold (' + temperature + '°C)';
+                var message = 'Temperature alert: Temperature exceeded threshold (' + temperature + '°C) ';
                 console.log('Alert received at:', timestamp);
                 messageElement.textContent = "Alert received at: " + timestamp + " " + message;
                 messageContainer.appendChild(messageElement);
                 document.getElementById('alertButton').classList.remove('d-none');
                 alertTriggered = true;
             }
+
             // Handle the temperature alert here, such as displaying a notification to the user
             // You can also perform other actions as needed, such as updating UI elements or logging the alert
         });

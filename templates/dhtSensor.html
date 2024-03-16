@@ -186,6 +186,8 @@
                 </div>
                 <br><br>
                 <div class="btn btn-danger d-none" id="messageContainer" class="container"></div>
+                <input type="hidden" id="user_latitude" value="{{ person.latitude }}">
+                <input type="hidden" id="user_longitude" value="{{ person.longitude }}">
                 <br><br>
                 <h2 class="h2">Real-time Data Table</h2>
                 <table id="sensorDataTable">
@@ -293,7 +295,7 @@
             chart.update();
         }
 
-        const temperatureThreshold = 40;
+        const temperatureThreshold = 30;
 
         function monitorTemperatureUpdates() {
             fetch('/realtime_data')
@@ -312,10 +314,14 @@
 
         function sendAlertToAuthorityHomePage(temperature) {
             // Emit alert message to authority home page using Socket.IO
+            var user_longitude = document.getElementById('user_longitude').value;
+            var user_latitude = document.getElementById('user_latitude').value;
             socket.emit('temperature_alert', {
-                temperature: temperature
+                temperature: temperature,
+                user_latitude: user_latitude,
+                user_longitude: user_longitude
             });
-            console.log('Temperature alert sent to authority home page:', temperature);
+            console.log('Temperature alert sent to authority home page:', temperature, 'Latitude', user_latitude, 'Longitude', user_longitude);
         }
         socket.on('emergency_alert', function(message) {
             var messageContainer = document.getElementById('messageContainer');
