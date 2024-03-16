@@ -130,7 +130,6 @@ def authoresult():
         try:
             govtAuthority = auth.sign_in_with_email_and_password(email, password)
             if govtAuthority is None:
-                # Handle case where authentication fails
                 raise Exception("Authentication failed")
             global authority
             authority["is_logged_in"] = True
@@ -150,14 +149,14 @@ def authoresult():
 @app.route("/authorityregister", methods=["POST", "GET"])
 def authorityregister():
     if request.method == "POST":  # Only listen to POST
-        result = request.form  # Get the data submitted
+        result = request.form  
         email = result["authemail"]
         password = result["authpass"]
         name = result["authname"]
         try:
-            # Try creating the user account using the provided data
+           
             auth.create_user_with_email_and_password(email, password)
-            # Login the user
+           
             govtAuth = auth.sign_in_with_email_and_password(email, password)
             # Add data to global person
             global authority
