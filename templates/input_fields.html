@@ -137,25 +137,39 @@
     <div class="main">
         <div class="container">
             <div class="blog">
-                <h2 class="h2">ML Model and Map Integration</h2>
+                <h2 class="h2">Temperature Prediction</h2>
+                <p class="p">Enter the following details to predict the temperature:</p>
                 <form action="/predict" method="post">
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">Humidity 3pm:</span>
-                        <input type="text" class="form-control" name="Humidity3pm" placeholder="humidity_3pm" aria-label="humidity_3pm" aria-describedby="basic-addon1" required>
+                        <label class="input-group-text" id="basic-addon1" for="temp9am">Temperature at 9am:</label><br>
+                        <input type="number" class="form-control" aria-describedby="basic-addon1" aria-label="Temperature 9am" id="temp9am" name="temp9am" value="20.0"><br>
                     </div>
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">humidity 9am:</span>
-                        <input type="text" class="form-control" name="Humidity9am" placeholder="humidity_9am" aria-label="humidity_9am" aria-describedby="basic-addon1" required>
+                        <label class="input-group-text" id="basic-addon1" for="temp3pm">Temperature at 3pm:</label><br>
+                        <input type="number" class="form-control" aria-describedby="basic-addon1" aria-label="Temperature 3am" id="temp3pm" name="temp3pm" value="25.0"><br>
                     </div>
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">Temperature 9am:</span>
-                        <input type="text" class="form-control" name="Temp9am" placeholder="Temperature 9am" aria-label="Temperature 9am" aria-describedby="basic-addon1" required>
+                        <label class="input-group-text" id="basic-addon1" for="humidity9am">Humidity at 9am:</label><br>
+                        <input type="number" class="form-control" aria-describedby="basic-addon1" aria-label="humidity_9am" id="humidity9am" name="humidity9am" value="60.0"><br>
                     </div>
                     <div class="input-group w-25 mb-3">
-                        <span class="input-group-text" id="basic-addon1">Temperature 3pm:</span>
-                        <input type="text" class="form-control" name="Temp3pm" placeholder="Temperature 3pm" aria-label="Temperature 3pm" aria-describedby="basic-addon1" required>
+                        <label class="input-group-text" id="basic-addon1" for="humidity3pm">Humidity at 3pm:</label><br>
+                        <input type="number" class="form-control" aria-describedby="basic-addon1" aria-label="humidity_3pm" id="humidity3pm" name="humidity3pm" value="50.0"><br>
                     </div>
-                    <button type="submit" class="btn btn-success">Predict</button>
+                    <div class="input-group w-25 mb-3">
+                        <label class="input-group-text" id="basic-addon1" for="month">Month (1-12):</label><br>
+                        <input type="number" class="form-control" aria-describedby="basic-addon1" id="month" name="month" min="1" max="12" value="6"><br>
+                    </div>
+                    <div class="input-group w-25 mb-3">
+                        <label class="input-group-text" id="basic-addon1" for="season">Season:</label><br>
+                        <select id="season" name="season">
+                        <option value="Fall">Fall</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Winter">Winter</option>
+                    </select><br><br>
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Predict">
                 </form>
             </div>
         </div>

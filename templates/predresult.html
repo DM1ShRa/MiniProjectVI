@@ -4,11 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Prediction Result</title>
+    <title>Temperature Prediction</title>
 </head>
 
 <body>
-
+    <h2>Temperature Prediction</h2>
+    <form action="/predict" method="post">
+        <label for="temp9am">Temperature at 9am:</label><br>
+        <input type="number" id="temp9am" name="temp9am" value="20.0"><br>
+        <label for="temp3pm">Temperature at 3pm:</label><br>
+        <input type="number" id="temp3pm" name="temp3pm" value="25.0"><br>
+        <label for="humidity9am">Humidity at 9am:</label><br>
+        <input type="number" id="humidity9am" name="humidity9am" value="60.0"><br>
+        <label for="humidity3pm">Humidity at 3pm:</label><br>
+        <input type="number" id="humidity3pm" name="humidity3pm" value="50.0"><br>
+        <label for="month">Month (1-12):</label><br>
+        <input type="number" id="month" name="month" min="1" max="12" value="6"><br>
+        <label for="season">Season:</label><br>
+        <select id="season" name="season">
+            <option value="Fall">Fall</option>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+            <option value="Winter">Winter</option>
+        </select><br><br>
+        <input type="submit" value="Predict">
+    </form>
 </body>
 
 </html>
