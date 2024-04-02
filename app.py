@@ -16,11 +16,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-
-
+import streamlit as st
+import os
+import google.generativeai as genai
 
 secret_key = secrets.token_hex(16)
-
+ 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
 app.config['SECRET_KEY'] = secret_key
@@ -348,6 +349,26 @@ def predict():
 
         return f'<h3>Predicted Min Temperature: {min_temp:.2f}</h3><h3>Predicted Max Temperature: {max_temp:.2f}</h3>'
     
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# Function to get Gemini response
+def get_gemini_response(question):
+    model = genai.GenerativeModel("gemini-pro") 
+    chat = model.start_chat(history=[])
+    response = chat.send_message(question, stream=True)
+    response_text = ' '.join(chunk.text for chunk in response)
+    return response_text
+
+# Route for the help page
+@app.route("/help", methods=["GET", "POST"])
+def help():
+    if request.method == "POST":
+        question = request.form.get("question")
+        response = get_gemini_response(question)
+        return render_template("help.html", response=response)
+    else:
+        return render_template("help.html")
+
+
 if __name__ == '__main__':
     # Start a thread for updating data in the background
     data_update_thread = threading.Thread(target=update_data)

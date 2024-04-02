@@ -1,13 +1,9 @@
-<!-- sensors.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensors</title>
-    <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -15,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
+    <title>ML Model and Map Integration</title>
+
 </head>
 
 <body class="light-theme">
@@ -24,7 +22,7 @@
 
             <nav class="navbar">
 
-                <a href="/">
+                <a href="#">
                     <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-light">
                     <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-dark">
                 </a>
@@ -62,9 +60,7 @@
                             <a href="/urDHT_sensor" class="nav-link">Your Sensor</a>
                         </li>
 
-                        {% if person.is_logged_in %}
-                        <li style="float:right;"><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
-                        {% endif %}
+
 
                     </ul>
 
@@ -99,36 +95,15 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="/urDHT_sensor" class="nav-link">Your Sensors</a>
+                                <a href="#yourSensors" class="nav-link">Your Sensors</a>
                             </li>
 
-                            {% if person.is_logged_in %}
-                            <li><a href="{{ url_for('logout') }}">Logout, {{ person.name }}</a></li>
-                            {% endif %}
 
                         </ul>
 
                     </div>
 
-                    <!-- <div>
-                
-                            <p class="h3 nav-title">Topics</p>
-                
-                            <ul>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">Disaster</a>
-                                </li>
-                
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">Sensors</a>
-                                </li>
-                
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">Prevention</a>
-                                </li>
-                            </ul>
-                
-                        </div> -->
+
 
                 </div>
 
@@ -137,68 +112,27 @@
         </div>
 
     </header>
-
     <div class="main">
         <div class="container">
-            <div class="blog">
-                <h2 class="h2">List of Sensors</h2>
-                <button class="blog-topic text-large" onclick="window.location.href='/dht_sensor'">DS18B20</button>
-                <button class="blog-topic text-large" onclick="window.location.href='/mpu_sensor'">MPU</button>
+            <div class="newsletter">
 
+                <h2 class="h2">Chats:</h2>
 
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-                <script>
-                    // Use JavaScript to dynamically load content when a link is clicked
-                    document.addEventListener("DOMContentLoaded", function () {
-                        document.querySelectorAll("a").forEach(function (link) {
-                            link.addEventListener("click", function (event) {
-                                event.preventDefault();
-                                var url = this.getAttribute("href");
-                                loadContent(url);
-                            });
-                        });
+                <div class="wrapper">
 
-                        // Function to load content dynamically
-                        function loadContent(url) {
-                            fetch(url)
-                                .then(response => response.text())
-                                .then(html => {
-                                    // Replace the content of the body with the loaded HTML
-                                    document.body.innerHTML = html;
-                                    // Add the fetched URL to the browser's history
-                                    window.history.pushState(null, null, url);
-                                })
-                                .catch(error => console.error("Error loading content:", error));
-                        }
-                    });
-                </script>
-            </div>
-            <div class="aside">
-
-
-
-
-
-                <div class="contact">
-
-                    <!-- <h2 class="h2">Let's Talk</h2> -->
-
-                    <div class="wrapper">
-
-                        <p>
-                            <img src="https://cdn.dribbble.com/users/79356/screenshots/1794811/media/d80e988e2466310d3e292fba3ad69424.gif" width="250" class="blog-banner-img">
-                        </p>
-                    </div>
-                    
-
+                    <p>
+                        Enter the query
+                    </p>
+                    <form action="/help" method="post">
+                        <label for="question">Enter your question:</label><br>
+                        <input type="text" id="question" name="question"><br><br>
+                        <input type="submit" value="Submit" class="btn btn-primary">
+                    </form>
 
                 </div>
 
-
-
             </div>
+           
         </div>
     </div>
 
@@ -208,10 +142,10 @@
 
             <div class="wrapper">
 
-                <!-- <a href="#" class="footer-logo">
+                <a href="#" class="footer-logo">
                     <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-light">
                     <img src="/static/images/rakshanetra.png" alt="SimpleBlog Logo" width="150" class="logo-dark">
-                </a> -->
+                </a>
 
                 <p class="footer-text">
                     "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility,
