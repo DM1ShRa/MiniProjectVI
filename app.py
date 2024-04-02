@@ -71,7 +71,7 @@ authority={"is_logged_in": False, "name": "", "email": "", "uid": ""}
 rf_regressor_min_temp = joblib.load('rf_regressor_min_temp.joblib')
 rf_regressor_max_temp = joblib.load('rf_regressor_max_temp.joblib')
 
-data_path = "/Sensor/DHT/Temperature"
+data_path = "/Sensor/DS18B20/Temperature"
 @app.before_request
 def before_request():
     if request.endpoint == 'input' and not person["is_logged_in"]:
@@ -287,7 +287,7 @@ def update_data():
         time.sleep(3)
 
 def get_updated_value():
-    data = fb.child("/Sensor/DHT/HeatIndex").get().val()
+    data = fb.child("/Sensor/DS18B20/Temperature").get().val()
     return data
 
 @app.route('/input_fields')
