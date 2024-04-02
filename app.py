@@ -1,6 +1,7 @@
 from flask import Flask, render_template,redirect, request, jsonify, session, abort, url_for
 import joblib
 import requests
+import pickle
 import firebase_admin
 import secrets
 from firebase_admin import credentials, db
@@ -67,9 +68,17 @@ authoritydb = firebase.database()
 
 person = {"is_logged_in": False, "name": "", "email": "", "uid": "","DHT":False,"MPU":False,"location":""}
 authority={"is_logged_in": False, "name": "", "email": "", "uid": ""}
+with open('pipeline_min_temp.pkl', 'rb') as f:
+    pipeline_min_temp = pickle.load(f)
 
-rf_regressor_min_temp = joblib.load('rf_regressor_min_temp.joblib')
-rf_regressor_max_temp = joblib.load('rf_regressor_max_temp.joblib')
+with open('pipeline_max_temp.pkl', 'rb') as f:
+    pipeline_max_temp = pickle.load(f)
+
+# Function to make predictions
+def predict_temperature(input_data):
+    min_temp = pipeline_min_temp.predict(input_data)
+    max_temp = pipeline_max_temp.predict(input_data)
+    return min_temp[0], max_temp[0]
 
 data_path = "/Sensor/DS18B20/Temperature"
 @app.before_request
@@ -309,24 +318,35 @@ def urdht_sensor():
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get input data from the request
-    input_data = request.form
-    
-    # Extract features from input data
-    features = [
-        input_data['Humidity9am'],
-        input_data['Humidity3pm'],
-        input_data['Temp9am'],
-        input_data['Temp3pm']
-    ]
-    
-    # Make predictions using the trained models
-    min_temp_prediction = rf_regressor_min_temp.predict([features])[0]
-    max_temp_prediction = rf_regressor_max_temp.predict([features])[0]
-    
-    # Create a response with the predictions
-    
-    # Return the response as JSON
-    return render_template('result.html', min_temp_prediction=min_temp_prediction, max_temp_prediction=max_temp_prediction)
+    if request.method == 'POST':
+        temp9am = float(request.form['temp9am'])
+        temp3pm = float(request.form['temp3pm'])
+        humidity9am = float(request.form['humidity9am'])
+        humidity3pm = float(request.form['humidity3pm'])
+        month = int(request.form['month'])
+        season = request.form['season']
+
+        # Convert season to one-hot encoding
+        season_mapping = {'Fall': [1, 0, 0, 0], 'Spring': [0, 1, 0, 0], 'Summer': [0, 0, 1, 0], 'Winter': [0, 0, 0, 1]}
+        season_encoded = season_mapping[season]
+
+        # Prepare input data for prediction
+        input_data = pd.DataFrame({
+            'Temp9am': [temp9am],
+            'Temp3pm': [temp3pm],
+            'Humidity9am': [humidity9am],
+            'Humidity3pm': [humidity3pm],
+            'Month': [month],
+            'Season_Fall': [season_encoded[0]],
+            'Season_Spring': [season_encoded[1]],
+            'Season_Summer': [season_encoded[2]],
+            'Season_Winter': [season_encoded[3]]
+        })
+
+        # Make predictions
+        min_temp, max_temp = predict_temperature(input_data)
+
+        return f'<h3>Predicted Min Temperature: {min_temp:.2f}</h3><h3>Predicted Max Temperature: {max_temp:.2f}</h3>'
     
 if __name__ == '__main__':
     # Start a thread for updating data in the background
