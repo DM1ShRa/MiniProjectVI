@@ -4,7 +4,11 @@
 * Set up Firebase
     * A database for storing temperature from the DHT sensor.
     * AUTH database for User and Authority
-* Run the Project :)
+* Run the Project 🙂🥸
+<br></br>
+![FunGIF](https://github.com/DM1ShRa/MiniProjectVI/assets/107783346/211556d0-4ad5-4f50-b895-92a1717885c3)
+
+
 <br></br>
 
 1. **Login/SignUp Page for Users and Authority.**
