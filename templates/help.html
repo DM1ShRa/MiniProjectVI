@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="./assets/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <title>Help Page</title>
+    <style>
+        /* Custom CSS styles */
+        ::placeholder {
+            font-size: 14px;
+            /* Adjust the font size as needed */
+        }
+
+        .btn-submit {
+            width: auto;
+            /* Adjust the width as needed */
+            padding: 8px 16px;
+            /* Adjust the padding as needed */
+            font-size: 14px;
+            /* Adjust the font size as needed */
+        }
+
+        .blog-card {
+            max-width: 900px;
+            /* Set maximum width */
+            width: 100%;
+            /* Ensure it takes full available width */
+        }
+
+        .blog-text {
+            max-width: 100%;
+            /* Set maximum width */
+            overflow-wrap: break-word;
+            /* Wrap long lines */
+            word-wrap: break-word;
+            /* Additional word wrapping support */
+            white-space: pre-line;
+            /* Preserve line breaks */
+        }
+
+        .blog-content-wrapper {
+            padding: 20px;
+            /* Add padding to the content */
+        }
+    </style>
+</head>
+
+<body class="light-theme">
+    <header>
+
+        <div class="container">
+
+            <nav class="navbar">
+
+                <a href="#">
+                    <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-light">
+                    <img src="/static/images/rakshanetra.png" alt="DPPS logo" width="150" class="logo-dark">
+                </a>
+
+                <div class="btn-group">
+
+                    <button class="theme-btn theme-btn-mobile light">
+                        <ion-icon name="moon" class="moon"></ion-icon>
+                        <ion-icon name="sunny" class="sun"></ion-icon>
+                    </button>
+
+                    <button class="nav-menu-btn">
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </button>
+
+                </div>
+
+                <div class="flex-wrapper">
+
+                    <ul class="desktop-nav">
+
+                        <li>
+                            <a href="/" class="nav-link">Home</a>
+                        </li>
+
+                        <li>
+                            <a href="/input_fields" class="nav-link">Temperature</a>
+                        </li>
+
+                        <li>
+                            <a href="/sensors" class="nav-link">Sensor</a>
+                        </li>
+
+                        <li>
+                            <a href="/urDHT_sensor" class="nav-link">Your Sensor</a>
+                        </li>
+
+
+
+                    </ul>
+
+                    <button class="theme-btn theme-btn-desktop light">
+                        <ion-icon name="moon" class="moon"></ion-icon>
+                        <ion-icon name="sunny" class="sun"></ion-icon>
+                    </button>
+
+                </div>
+
+                <div class="mobile-nav">
+
+                    <button class="nav-close-btn">
+                        <ion-icon name="close-outline"></ion-icon>
+                    </button>
+
+                    <div class="wrapper">
+
+                        <p class="h3 nav-title">Main Menu</p>
+
+                        <ul>
+                            <li class="nav-item">
+                                <a href="/" class="nav-link">Home</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/input_fields" class="nav-link">Temperature</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/sensors" class="nav-link">Sensors</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="#yourSensors" class="nav-link">Your Sensors</a>
+                            </li>
+
+
+                        </ul>
+
+                    </div>
+
+
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+    <div class="main">
+        <div class="container">
+            <div class="newsletter">
+                <h2 class="h2">Chats:</h2>
+                <div class="wrapper">
+                    <form action="/help" method="post">
+                        <label for="question">Enter your question:</label><br>
+                        <input type="text" id="question" name="question" placeholder="Your question" required><br><br>
+                        <input type="submit" value="Submit" class="flex btn btn-primary btn-submit">
+                    </form>
+                </div>
+
+            </div>
+            <div class="blog">
+
+                <h2 class="h2">Response</h2>
+
+                <div class="blog-card-group">
+
+                    <div class="blog-card">
+
+
+                        <div class="blog-content-wrapper">
+
+                            <button class="blog-topic text-tiny">Chats</button>
+
+
+
+                            <p class="blog-text">
+                                {% if response %}
+                            <pre id="response">{{ response }}</pre>
+                            {% endif %}
+                            </p>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to format the response text
+        document.addEventListener("DOMContentLoaded", function () {
+            var responseText = document.getElementById("response").innerText;
+            var formattedResponse = responseText.split('. ').join('.\n');
+            document.getElementById("response").innerText = formattedResponse;
+        });
+    </script>
+
+</body>
+
+</html>

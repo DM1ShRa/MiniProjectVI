@@ -162,11 +162,16 @@
                 <div class="blog">
                     <div class="left">
                         <h1 class="h1">Home</h1>
-                        <div id="messageContainer" class="container"></div>
+                        <div class="aside">
+                            <div class="wrapper">
+                        <div id="messageContainer" class="contact">
+                        </div> 
+                        </div>
+                    </div>
 
                     </div>
-                    <div class="mb-3">
-                        <div id="map" style="height: 400px;"></div>
+                    <div class="mb-3 py-3">
+                        <div id="map" style="height: 400px;" ></div>
                     </div>
                     <button id="alertButton" class="btn btn-danger d-none" onclick="sendEmergencyAlert()">Emergency</button>
                     <table id="sensorDataTable">
@@ -263,16 +268,23 @@
         }
 
         function sendEmergencyAlert() {
-            var distance = 10; // Example distance in kilometers
-            var averageSpeed = 50; // Example average speed in km/h
-            // Calculate ETA
-            var etaMinutes = calculateETA(distance, averageSpeed);
-            // Prepare the message with ETA
-            var messageWithETA = "Authority is coming! Estimated time: " + etaMinutes + " minutes.";
-            socket.emit('emergency_alert', messageWithETA);
-            console.log("Socket Sent")
-
-        }
+    var distance = 10; // Example distance in kilometers
+    var averageSpeed = 50; // Example average speed in km/h
+    // Calculate ETA
+    var etaMinutes = calculateETA(distance, averageSpeed);
+    // Prepare the message with ETA
+    var messageWithETA = "Authority is coming! Estimated time: " + etaMinutes + " minutes.";
+    
+    // Display the GIF
+    var gifUrl = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNm02Y3Juc25tbG84OW5lZ3NpMXN2c3BkYzA2NWhqOGptejB2bWQzNyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oKIPdGRt4YcjFx8be/giphy.gif"; // Replace 'link_of_gif.gif' with the actual URL of your GIF
+    var imgElement = document.createElement('img');
+    imgElement.src = gifUrl;
+    document.body.appendChild(imgElement); // Append the image to the body or any desired element
+    
+    // Send the emergency alert message through the socket
+    socket.emit('emergency_alert', messageWithETA);
+    console.log("Socket Sent");
+}
 
         function updateTableData() {
             // Fetch real-time data from the Flask route

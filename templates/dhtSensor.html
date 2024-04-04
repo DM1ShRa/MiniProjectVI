@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHT Sensor</title>
+    <title>DS18B20 Sensor</title>
     <!-- Include Bootstrap CSS (You can customize the link based on your setup) -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,15 +16,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+        integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+        crossorigin="anonymous"></script>
     <style>
         #chart-container {
             max-width: 800px;
             margin: 0 auto;
         }
+
         /* Style individual charts */
-        
+
         .chart {
             width: 100%;
             /* Use 100% width for responsiveness */
@@ -33,20 +37,20 @@
             margin: 20px 0 20px 20px;
             /* Add some margin between charts */
         }
-        
+
         table {
             width: 80%;
             margin: 20px auto;
             border-collapse: collapse;
         }
-        
+
         th,
         td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        
+
         th {
             background-color: #04AA6D;
             color: white;
@@ -178,7 +182,7 @@
         <div class="container">
 
             <div class="blog">
-                <h2 class="h2">DHT Sensor Information</h2>
+                <h2 class="h2">DS18B20 Sensor Information</h2>
                 <div id="chart-container">
                     <div class="chart">
                         <canvas id="realtimeChart" width="400" height="200"></canvas>
@@ -207,140 +211,238 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <script>
-        // Initialize an empty chart
-        var socket = io.connect('http://localhost:5000');
-        var ctx = document.getElementById('realtimeChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Temperature Data',
-                    data: [],
-                    borderColor: 'blue',
-                    borderWidth: 1,
-                    fill: false,
-                    tension: 0
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-        // Update the chart only when new data is retrieved
-        function updateChart() {
-            // Fetch real-time data from the Flask route
-            fetch('/realtime_data')
-                .then(response => response.json())
-                .then(data => {
-                    // Check if the data is valid before updating the chart
-                    if (isValidData(data)) {
-                        // Update the chart with new data
-                        updateChartData(data);
-                    }
-                });
-        }
 
-        function updateTableData() {
-            // Fetch real-time data from the Flask route
-            fetch('/realtime_data')
-                .then(response => response.json())
-                .then(data => {
-                    // Check if the data is valid before updating the table
-                    if (isValidData(data)) {
-                        // Update the table with new data
-                        updateTable(data);
-                    }
-                });
-        }
+            <div class="aside">
+                <div class="blog">
 
-        function updateTable(data) {
-            var tableBody = document.getElementById('sensorDataTable').getElementsByTagName('tbody')[0];
-            var newRow = tableBody.insertRow();
-            var cell1 = newRow.insertCell(0);
-            var cell2 = newRow.insertCell(1);
-            cell1.textContent = data.timestamp || 'N/A';
-            cell2.textContent = data.value || 'N/A';
-            if (tableBody.rows.length > 10) {
-                tableBody.deleteRow(0);
-            }
-            console.log(data)
-        }
+                    <h2 class="h2">Daily Articles</h2>
 
-        function isValidData(data) {
-            // Add your validation logic here
-            // For example, check if data.timestamp and data.value exist and are of the correct type
-            return data && typeof data.timestamp === 'number' && typeof data.value === 'number';
-        }
+                    <div class="blog-card-group">
 
-        function updateChartData(data) {
-            // Add new data to the chart
-            chart.data.labels.push(data.timestamp);
-            chart.data.datasets[0].data.push(data.value);
-            // Set line color based on temperature ranges
-            // Remove old data if the number of data points exceeds a certain limit
-            if (chart.data.labels.length > 10) {
-                chart.data.labels.shift();
-                chart.data.datasets[0].data.shift();
-            }
-            // Update the chart
-            chart.update();
-        }
+                        
 
-        const temperatureThreshold = 30;
 
-        function monitorTemperatureUpdates() {
-            fetch('/realtime_data')
-                .then(response => response.json())
-                .then(data => {
-                    if (isValidData(data)) {
-                        // Update the chart and table with new data
-                        // Check if temperature exceeds threshold
-                        if (data.value > temperatureThreshold) {
-                            // Temperature exceeds threshold, send alert to authority home page
-                            sendAlertToAuthorityHomePage(data.value);
+                        <div class="blog-card">
+
+                            <div class="blog-card-banner">
+                                <img src="https://elementalmachines.com/hs-fs/hubfs/InsightsLaptop.png?width=1650&height=1238&name=InsightsLaptop.png" width="500" class="blog-banner-img">
+                            </div>
+
+                            <div class="blog-content-wrapper">
+
+                                <button class="blog-topic text-tiny">Atmosphere</button>
+
+                                <h3><a href="https://elementalmachines.com/cold-storage-monitoring"
+                                        class="h3">Cold Storage Monitoring</a></h3>
+
+                                <p class="blog-text">
+                                    Labs need cold storage to maintain the integrity of biological samples, vaccines, and medications. If these materials get too cold, too warm, or experience too many temperature fluctuations, they may degrade and either won’t be effective or will cause skewed findings in research. This means that all that time and money you spent planning, testing, and analyzing your experiment are wasted. Gone. Poof. Time to start from scratch.
+                                </p>
+
+                                <div class="wrapper-flex">
+
+
+
+                                    <div class="wrapper">
+                                        <a href="https://elementalmachines.com/" class="h4">Element Machine</a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="blog-card">
+
+
+
+                            <div class="blog-content-wrapper">
+
+                                <button class="blog-topic text-tiny">Natural Disaster</button>
+
+                                <h3><a href="https://www.downtoearth.org.in/blog/natural-disasters/25-years-of-odisha-super-cyclone-a-study-of-jagatsinghpur-shows-advances-the-way-ahead-92218"
+                                        class="h3">25 years of Odisha Super Cyclone: A study of Jagatsinghpur shows
+                                        advances & the way ahead</a></h3>
+
+                                <p class="blog-text">
+                                    As we approach the 25th year of the Super Cyclone in Odisha, there are several
+                                    things we need to celebrate for the advances made in disaster preparedness, timely
+                                    warnings and evacuation and response. But we also need to evaluate the gaps and plan
+                                    better
+                                    for upcoming climate-related disasters. Global warming has heightened cyclone
+                                    intensity, multiple rapid intensifications leading to unpredictability of cyclone
+                                    behaviour, according to a study by the Indian National
+                                    Centre for Ocean Information Services (INCOIS). This calls for better forecasting
+                                    systems, strengthening of disaster response systems and infrastructure improvement.
+                                </p>
+
+                                <div class="wrapper-flex">
+
+                                    <!-- <div class="profile-wrapper">
+                      <img src="./assets/images/author.png" alt="Julia walker" width="50">
+                    </div> -->
+
+                                    <div class="wrapper">
+                                        <a href="https://www.downtoearth.org.in/" class="h4">downtoearth</a>
+
+                                        <p class="text-sm">
+                                            <time datetime="2021-11-28">Oct 10, 2023</time>
+                                            <span class="separator"></span>
+                                            <ion-icon name="time-outline"></ion-icon>
+                                            <time datetime="PT4M">4 min</time>
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                </div>
+            </div>
+
+            <script>
+                // Initialize an empty chart
+                var socket = io.connect('http://localhost:5000');
+                var ctx = document.getElementById('realtimeChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Temperature Data',
+                            data: [],
+                            borderColor: 'blue',
+                            borderWidth: 1,
+                            fill: false,
+                            tension: 0
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom'
+                            }
                         }
                     }
                 });
-        }
+                // Update the chart only when new data is retrieved
+                function updateChart() {
+                    // Fetch real-time data from the Flask route
+                    fetch('/realtime_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Check if the data is valid before updating the chart
+                            if (isValidData(data)) {
+                                // Update the chart with new data
+                                updateChartData(data);
+                            }
+                        });
+                }
 
-        function sendAlertToAuthorityHomePage(temperature) {
-            // Emit alert message to authority home page using Socket.IO
-            var user_longitude = document.getElementById('user_longitude').value;
-            var user_latitude = document.getElementById('user_latitude').value;
-            socket.emit('temperature_alert', {
-                temperature: temperature,
-                user_latitude: user_latitude,
-                user_longitude: user_longitude
-            });
-            console.log('Temperature alert sent to authority home page:', temperature, 'Latitude', user_latitude, 'Longitude', user_longitude);
-        }
-        socket.on('emergency_alert', function(message) {
-            var messageContainer = document.getElementById('messageContainer');
-            var messageElement = document.createElement('p');
-            var timestamp = new Date().toLocaleString();
-            console.log('Authority responded at:', timestamp);
-            messageElement.textContent = "Authority responded at: " + timestamp + " " + message;
-            document.getElementById('messageContainer').classList.remove('d-none');
-            messageContainer.appendChild(messageElement);
-            alert("Authority responded at: " + timestamp + " " + message);
-        });
-        // Update the chart every 3 seconds
-        setInterval(updateChart, 3000);
-        setInterval(updateTableData, 3000);
-        setInterval(monitorTemperatureUpdates, 3000);
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+                function updateTableData() {
+                    // Fetch real-time data from the Flask route
+                    fetch('/realtime_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Check if the data is valid before updating the table
+                            if (isValidData(data)) {
+                                // Update the table with new data
+                                updateTable(data);
+                            }
+                        });
+                }
+
+                function updateTable(data) {
+                    var tableBody = document.getElementById('sensorDataTable').getElementsByTagName('tbody')[0];
+                    var newRow = tableBody.insertRow();
+                    var cell1 = newRow.insertCell(0);
+                    var cell2 = newRow.insertCell(1);
+                    cell1.textContent = data.timestamp || 'N/A';
+                    cell2.textContent = data.value || 'N/A';
+                    if (tableBody.rows.length > 10) {
+                        tableBody.deleteRow(0);
+                    }
+                    console.log(data)
+                }
+
+                function isValidData(data) {
+                    // Add your validation logic here
+                    // For example, check if data.timestamp and data.value exist and are of the correct type
+                    return data && typeof data.timestamp === 'number' && typeof data.value === 'number';
+                }
+
+                function updateChartData(data) {
+                    // Add new data to the chart
+                    chart.data.labels.push(data.timestamp);
+                    chart.data.datasets[0].data.push(data.value);
+                    // Set line color based on temperature ranges
+                    // Remove old data if the number of data points exceeds a certain limit
+                    if (chart.data.labels.length > 10) {
+                        chart.data.labels.shift();
+                        chart.data.datasets[0].data.shift();
+                    }
+                    // Update the chart
+                    chart.update();
+                }
+
+                const temperatureThreshold = 32;
+
+                function monitorTemperatureUpdates() {
+                    fetch('/realtime_data')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (isValidData(data)) {
+                                // Update the chart and table with new data
+                                // Check if temperature exceeds threshold
+                                if (data.value > temperatureThreshold) {
+                                    // Temperature exceeds threshold, send alert to authority home page
+                                    sendAlertToAuthorityHomePage(data.value);
+                                }
+                            }
+                        });
+                }
+
+                function sendAlertToAuthorityHomePage(temperature) {
+                    // Emit alert message to authority home page using Socket.IO
+                    var user_longitude = document.getElementById('user_longitude').value;
+                    var user_latitude = document.getElementById('user_latitude').value;
+                    socket.emit('temperature_alert', {
+                        temperature: temperature,
+                        user_latitude: user_latitude,
+                        user_longitude: user_longitude
+                    });
+                    console.log('Temperature alert sent to authority home page:', temperature, 'Latitude', user_latitude, 'Longitude', user_longitude);
+                }
+                socket.on('emergency_alert', function (message) {
+                    var messageContainer = document.getElementById('messageContainer');
+                    var messageElement = document.createElement('p');
+                    var timestamp = new Date().toLocaleString();
+                    console.log('Authority responded at:', timestamp);
+                    messageElement.textContent = "Authority responded at: " + timestamp + " " + message;
+                    document.getElementById('messageContainer').classList.remove('d-none');
+                    messageContainer.appendChild(messageElement);
+                    alert("Authority responded at: " + timestamp + " " + message);
+                });
+                // Update the chart every 3 seconds
+                setInterval(updateChart, 3000);
+                setInterval(updateTableData, 3000);
+                setInterval(monitorTemperatureUpdates, 3000);
+            </script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+        </div>
+    </div>
     <footer>
 
         <div class="container">
@@ -353,7 +455,9 @@
                 </a>
 
                 <p class="footer-text">
-                    "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility, optimum Web performance, and seamless Database management, integrated with cutting-edge IoT sensors for enhanced real-time monitoring."
+                    "Discover the pillars of our disaster management system: Embrace the fusion of Web accessibility,
+                    optimum Web performance, and seamless Database management, integrated with cutting-edge IoT sensors
+                    for enhanced real-time monitoring."
                 </p>
 
             </div>
