@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from expected_columns import expected_columns
 
 
 
@@ -79,11 +80,15 @@ def predict_temperature(input_data):
     min_temp = pipeline_min_temp.predict(input_data)
     max_temp = pipeline_max_temp.predict(input_data)
     return min_temp[0], max_temp[0]
+with open('emergency_response_pipeline.pkl', 'rb') as file:
+    pipeline = pickle.load(file)
 
 data_path = "/Sensor/DHT/Temperature"
 @app.before_request
 def before_request():
     if request.endpoint == 'input' and not person["is_logged_in"]:
+        return redirect(url_for('login'))
+    elif request.endpoint == 'auth_pred' and not person["is_logged_in"]:
         return redirect(url_for('login'))
     elif request.endpoint == 'sensors' and not person["is_logged_in"]:
         return redirect(url_for('login'))
@@ -93,6 +98,7 @@ def before_request():
         return redirect(url_for('login'))
     elif request.endpoint == 'urdht_sensor' and (not person["is_logged_in"] or not person["DHT"]):
         return redirect(url_for('home'))
+    
 
 @app.route("/login")
 def login():
@@ -302,6 +308,9 @@ def get_updated_value():
 @app.route('/input_fields')
 def input():
     return render_template('input_fields.html', person=person)
+@app.route('/auth-pred')
+def auth_pred():
+    return render_template('auth_pred.html', person=person)
 @app.route('/sensors')
 def sensors():
     return render_template('sensors.html', person=person)
@@ -330,7 +339,7 @@ def predict():
         season_mapping = {'Fall': [1, 0, 0, 0], 'Spring': [0, 1, 0, 0], 'Summer': [0, 0, 1, 0], 'Winter': [0, 0, 0, 1]}
         season_encoded = season_mapping[season]
 
-        # Prepare input data for prediction
+        # Prepare input data 'for prediction
         input_data = pd.DataFrame({
             'Temp9am': [temp9am],
             'Temp3pm': [temp3pm],
@@ -347,7 +356,32 @@ def predict():
         min_temp, max_temp = predict_temperature(input_data)
 
         return f'<h3>Predicted Min Temperature: {min_temp:.2f}</h3><h3>Predicted Max Temperature: {max_temp:.2f}</h3>'
-    
+@app.route('/authpredict', methods=['POST'])
+def authpredict():
+   # Get form data
+    incident_type = request.form['incident_type']
+    time_of_day = request.form['time_of_day']
+    day_of_week = request.form['day_of_week']
+    weather_conditions = request.form['weather_conditions']
+    distance_km = float(request.form['distance_km'])
+    response_time_minutes = int(request.form['response_time_minutes'])
+
+    input_data = pd.DataFrame({
+        'Incident Type': [incident_type],
+        'Time of Day': [time_of_day],
+        'Day of Week': [day_of_week],
+        'Weather Conditions': [weather_conditions],
+        'Distance (km)': [distance_km],
+        'Response Time (minutes)': [response_time_minutes]
+    })
+    missing_cols = expected_columns - set(input_data.columns)
+    for col in missing_cols:
+        input_data[col] = 0
+    input_data_encoded = pipeline.named_steps['preprocessor'].transform(input_data)
+    prediction = pipeline.predict(input_data_encoded)[0]
+
+    return render_template('prediction_result.html', prediction=prediction)
+
 if __name__ == '__main__':
     # Start a thread for updating data in the background
     data_update_thread = threading.Thread(target=update_data)

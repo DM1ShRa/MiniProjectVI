@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Response Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        select,
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Enter Incident Details</h1>
+    <form action="/authpredict" method="post">
+        <label for="incident_type">Incident Type:</label>
+        <select name="incident_type" id="incident_type">
+            <option value="Medical Emergency">Medical Emergency</option>
+            <option value="Fire">Fire</option>
+            <option value="Accident">Accident</option>
+        </select><br>
+
+        <label for="time_of_day">Time of Day:</label>
+        <input type="text" id="time_of_day" name="time_of_day" value="9:00 AM"><br>
+
+        <label for="day_of_week">Day of Week:</label>
+        <select name="day_of_week" id="day_of_week">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select><br>
+
+        <label for="weather_conditions">Weather Conditions:</label>
+        <select name="weather_conditions" id="weather_conditions">
+            <option value="Clear">Clear</option>
+            <option value="Rainy">Rainy</option>
+            <option value="Sunny">Sunny</option>
+            <option value="Foggy">Foggy</option>
+            <option value="Cloudy">Cloudy</option>
+        </select><br>
+
+        <label for="distance_km">Distance (km):</label>
+        <input type="number" id="distance_km" name="distance_km" value="1.0" step="0.1"><br>
+
+        <label for="response_time_minutes">Response Time (minutes):</label>
+        <input type="number" id="response_time_minutes" name="response_time_minutes" value="10" step="1"><br>
+
+        <input type="submit" value="Predict">
+    </form>
+</body>
+
+</html>
