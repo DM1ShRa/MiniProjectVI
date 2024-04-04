@@ -9,19 +9,15 @@ from flask_socketio import SocketIO, emit
 import time
 import threading
 import pandas as pd
+import random
 import pyrebase
-import folium
-from folium.plugins import MarkerCluster, HeatMap
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
 from expected_columns import expected_columns
-import streamlit as st
-import os
-import google.generativeai as genai
 
-secret_key = secrets.token_hex(16)
+
+def generate_random_hex(length):
+    hex_chars = '0123456789abcdef'
+    return ''.join(random.choice(hex_chars) for _ in range(length))
+secret_key = generate_random_hex(16)
  
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
@@ -382,26 +378,6 @@ def authpredict():
     prediction = pipeline.predict(input_data_encoded)[0]
 
     return render_template('prediction_result.html', prediction=prediction)
-    
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-# Function to get Gemini response
-def get_gemini_response(question):
-    model = genai.GenerativeModel("gemini-pro") 
-    chat = model.start_chat(history=[])
-    response = chat.send_message(question, stream=True)
-    response_text = ' '.join(chunk.text for chunk in response)
-    return response_text
-
-# Route for the help page
-@app.route("/help", methods=["GET", "POST"])
-def help():
-    if request.method == "POST":
-        question = request.form.get("question")
-        response = get_gemini_response(question)
-        return render_template("help.html", response=response)
-    else:
-        return render_template("help.html")
-
 
 if __name__ == '__main__':
     # Start a thread for updating data in the background
