@@ -1,6 +1,4 @@
 from flask import Flask, render_template,redirect, request, jsonify, session, abort, url_for
-import joblib
-import requests
 import pickle
 import firebase_admin
 import secrets
