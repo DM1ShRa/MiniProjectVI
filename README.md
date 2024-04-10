@@ -23,7 +23,6 @@
 4. **Authority Home page with user's location when temperature exceeds the threshold.**
 <br></br>
 ![image](https://github.com/DM1ShRa/MiniProjectVI/assets/107783346/1f095bee-112d-4d4f-8877-e750d35bccf4)
-![FunGIF](https://github.com/DM1ShRa/MiniProjectVI/assets/107783346/211556d0-4ad5-4f50-b895-92a1717885c3)
 
 
 
